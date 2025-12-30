@@ -4,30 +4,97 @@
 <meta charset="UTF-8">
 <title>Elin4 | Minecraft Portfolio</title>
 <style>
-  body { background: #0e0e12; color: #e5e5e5; font-family: Arial, sans-serif; padding: 40px; text-align: center; }
-  h1 { color: #a855f7; }
-  .video, .screenshots { margin-top: 40px; }
-  video { max-width: 100%; border: 2px solid #2a2a2a; border-radius: 8px; }
-  img { max-width: 45%; margin: 10px; border: 2px solid #2a2a2a; border-radius: 8px; }
+  body {
+    background: #0e0e12;
+    color: #e5e5e5;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    text-align: center;
+  }
+
+  h1 {
+    color: #a855f7;
+    font-size: 3em;
+    margin-bottom: 10px;
+  }
+
+  p.subtitle {
+    color: #c0c0c0;
+    font-size: 1.2em;
+    margin-bottom: 40px;
+  }
+
+  .project {
+    background: #1b1b22;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 30px auto;
+    max-width: 800px;
+    text-align: left;
+  }
+
+  .project h2 {
+    color: #fbbf24;
+    margin-bottom: 10px;
+  }
+
+  .video, .screenshots {
+    margin-top: 40px;
+  }
+
+  iframe, video {
+    max-width: 100%;
+    border: 2px solid #2a2a2a;
+    border-radius: 8px;
+  }
+
+  .screenshots img {
+    max-width: 45%;
+    margin: 10px;
+    border: 2px solid #2a2a2a;
+    border-radius: 8px;
+  }
+
+  @media(max-width: 600px){
+    .screenshots img { max-width: 90%; }
+  }
 </style>
 </head>
 <body>
 
 <h1>Elin4</h1>
-<p>Minecraft Skript / Plugin Developer</p>
+<p class="subtitle">Minecraft Skript / Plugin Developer</p>
 
-<div class="video">
-  <h2>Demo Video</h2>
-  <video controls>
-    <source src="demo.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+<div class="project video">
+  <h2>Demo Video: Void Blade & Warden Sword</h2>
+  <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/c2LI4pcD5UQ"
+    title="Elin4 Minecraft Demo"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
 </div>
 
-<div class="screenshots">
+<div class="project screenshots">
   <h2>Screenshots</h2>
   <img src="screenshot1.png" alt="Screenshot 1">
   <img src="screenshot2.png" alt="Screenshot 2">
+</div>
+
+<div class="project">
+  <h2>Void Blade</h2>
+  <p>Custom sword ability that spawns a void rift in front of the player, with particles and damage effect.</p>
+</div>
+
+<div class="project">
+  <h2>Warden Sword</h2>
+  <p>Thunder shock ability with particles, sound, and cooldown.</p>
+</div>
+
+<div class="project">
+  <h2>Thunderfang</h2>
+  <p>Lightning sword that sends a shockwave on right-click, perfect for crowd control.</p>
 </div>
 
 </body>
