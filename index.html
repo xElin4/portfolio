@@ -1,383 +1,608 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Elin4 | Minecraft Portfolio</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg-color: #09090b;
-    --card-bg: #18181b;
-    --accent: #a855f7;
-    --accent-hover: #9333ea;
-    --text-main: #e4e4e7;
-    --text-muted: #a1a1aa;
-    --border: #27272a;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS // JAVA CLIENT</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+    <style>
+        /* =========================================
+           CORE VARIABLES & RESET
+           ========================================= */
+        :root {
+            --bg-dark: #050505;
+            --bg-panel: rgba(20, 20, 25, 0.6);
+            --primary: #8b5cf6; /* Violet */
+            --primary-glow: rgba(139, 92, 246, 0.5);
+            --accent: #f43f5e; /* Rose/Red for errors/aggression */
+            --accent-glow: rgba(244, 63, 94, 0.5);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --card-radius: 16px;
+            --transition-speed: 0.3s;
+            --font-display: 'Rajdhani', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+        }
 
-  body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
 
-  /* --- Header Section --- */
-  header {
-    text-align: center;
-    padding: 80px 20px 40px;
-    background: radial-gradient(circle at top, #2e1065 0%, var(--bg-color) 60%);
-  }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-display);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
-  h1 {
-    font-size: 4em;
-    font-weight: 800;
-    letter-spacing: -2px;
-    margin-bottom: 10px;
-    background: linear-gradient(to right, #c084fc, #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0px 0px 30px rgba(168, 85, 247, 0.3);
-  }
+        /* Background Mesh/Noise Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: -1;
+        }
 
-  p.subtitle {
-    color: var(--text-muted);
-    font-size: 1.25em;
-    max-width: 600px;
-    margin: 0 auto;
-  }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a78bfa;
+        }
 
-  /* --- Navigation / Tabs --- */
-  .tabs-container {
-    display: flex;
-    justify-content: center;
-    margin: 40px 0;
-    position: sticky;
-    top: 20px;
-    z-index: 100;
-  }
+        /* =========================================
+           LAYOUT & CONTAINER
+           ========================================= */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            z-index: 2;
+            width: 100%;
+        }
 
-  .tabs {
-    background: rgba(39, 39, 42, 0.6);
-    backdrop-filter: blur(10px);
-    padding: 8px;
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    gap: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
+        header {
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+        }
 
-  .tab-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    padding: 12px 30px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 40px;
-    transition: all 0.3s ease;
-  }
+        h1 {
+            font-family: var(--font-code);
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px var(--primary-glow);
+            margin-bottom: 10px;
+        }
 
-  .tab-btn:hover {
-    color: #fff;
-  }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
 
-  .tab-btn.active {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-  }
+        /* =========================================
+           GRID SYSTEM
+           ========================================= */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            perspective: 1000px;
+        }
 
-  /* --- Content Grid --- */
-  .content-section {
-    display: none; /* Hidden by default */
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px 100px;
-    animation: fadeIn 0.5s ease;
-  }
+        /* =========================================
+           CARD DESIGN (GLASSMORPHISM)
+           ========================================= */
+        .card {
+            background: var(--bg-panel);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            height: 380px;
+            position: relative;
+            overflow: hidden;
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed);
+        }
 
-  .content-section.active {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 25px;
-  }
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 
+                        0 0 20px var(--primary-glow);
+            border-color: var(--primary);
+            z-index: 10;
+        }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+        /* Animated border gradient on hover */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: var(--card-radius);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+            pointer-events: none;
+        }
 
-  /* --- Cards --- */
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+        /* =========================================
+           CARD HEADER
+           ========================================= */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
 
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 40px -10px rgba(168, 85, 247, 0.15);
-    border-color: var(--accent);
-  }
+        .module-info {
+            display: flex;
+            flex-direction: column;
+        }
 
-  .card-header {
-    padding: 20px;
-    border-bottom: 1px solid var(--border);
-  }
+        .lang-tag {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            display: inline-block;
+            background: rgba(139, 92, 246, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
 
-  .card-header h3 {
-    font-size: 1.1em;
-    color: #fff;
-  }
+        .module-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
 
-  .card-header span {
-    font-size: 0.8em;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 800;
-  }
+        /* Status Dot */
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            animation: pulse-red 2s infinite;
+        }
+        
+        .status-indicator.active {
+            background-color: #10b981; /* Green */
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse-green 2s infinite;
+        }
 
-  .media-container {
-    position: relative;
-    width: 100%;
-    padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    background: #000;
-  }
+        /* =========================================
+           PREVIEW AREA (Replacing broken iframes)
+           ========================================= */
+        .preview-container {
+            flex-grow: 1;
+            background: #000;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-  iframe, img, video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    object-fit: cover;
-  }
+        /* Scanline effect for video preview */
+        .preview-container::before {
+            content: "NO SIGNAL";
+            font-family: var(--font-code);
+            color: rgba(255,255,255,0.2);
+            font-size: 1.5rem;
+            z-index: 2;
+            letter-spacing: 5px;
+        }
 
-  .full-width {
-    grid-column: 1 / -1;
-  }
+        .preview-container::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
 
-  /* --- Footer --- */
-  footer {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-muted);
-    border-top: 1px solid var(--border);
-    margin-top: auto;
-  }
+        .glitch-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.05) 4px,
+                rgba(255, 255, 255, 0.05) 5px
+            );
+            animation: scroll-scan 10s linear infinite;
+        }
 
-</style>
+        /* Different visual styles for different modules */
+        .preview-graphic {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 60%);
+            opacity: 0.2;
+            animation: rotate-graphic 10s linear infinite;
+        }
+
+        /* =========================================
+           FOOTER / ERROR BAR
+           ========================================= */
+        .card-footer {
+            margin-top: 20px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-badge {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--accent);
+            font-family: var(--font-code);
+            font-size: 0.7rem;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            text-transform: uppercase;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .error-badge {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* =========================================
+           ANIMATIONS
+           ========================================= */
+        @keyframes pulse-red {
+            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
+            70% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); }
+            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+        }
+
+        @keyframes scroll-scan {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        @keyframes rotate-graphic {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Canvas for Particles */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.6;
+        }
+
+        /* =========================================
+           UTILITY CLASSES
+           ========================================= */
+        .hidden { display: none; }
+        .icon { width: 14px; height: 14px; fill: currentColor; }
+
+    </style>
 </head>
 <body>
 
-<header>
-  <h1>Elin4</h1>
-  <p class="subtitle">Minecraft Development Portfolio</p>
-</header>
+    <canvas id="particle-canvas"></canvas>
 
-<div class="tabs-container">
-  <div class="tabs">
-    <button class="tab-btn active" onclick="openTab('java')">Java / Clips</button>
-    <button class="tab-btn" onclick="openTab('skript')">Skript / Demos</button>
-  </div>
-</div>
+    <div class="main-container">
+        
+        <header>
+            <h1>Client Modules</h1>
+            <div class="subtitle">System Integrity: <span style="color: var(--accent)">Compromised</span></div>
+        </header>
 
-<div id="java" class="content-section active">
-  
-  <div class="card">
-    <div class="card-header">
-      <span>Java</span>
-      <h3>Reaper</h3>
-    </div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lQ85HnWGtROGeFcP6/cr-MSxyZ1gsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        <div class="module-grid">
 
-  <div class="card">
-    <div class="card-header">
-      <span>Java</span>
-      <h3>Fragality</h3>
-    </div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lQ8bwrI8B1Vpayacg/cr-MSx5M0IsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+            <article class="card">
+                <div class="card-header">
+                    <div class="module-info">
+                        <span class="lang-tag">Java</span>
+                        <h3 class="module-title">Reaper</h3>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="preview-container">
+                    <div class="glitch-overlay"></div>
+                    <div class="preview-graphic" style="background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); top: 50%; left: 50%;"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="error-badge">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        Connection Refused
+                    </div>
+                </div>
+            </article>
 
-  <div class="card">
-    <div class="card-header">
-      <span>Java</span>
-      <h3>Agony</h3>
-    </div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lQ8gEms6pWyS6Kboe/cr-MSw5OE4sNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+            <article class="card">
+                <div class="card-header">
+                    <div class="module-info">
+                        <span class="lang-tag">Java</span>
+                        <h3 class="module-title">Fragility</h3>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="preview-container">
+                    <div class="glitch-overlay"></div>
+                    <div class="preview-graphic" style="background: radial-gradient(circle, #ec4899 0%, transparent 70%); top: 30%; left: 70%;"></div>
+                    <div style="position:absolute; z-index:5; text-align:center; font-family: var(--font-code); color: #fff; text-shadow: 0 0 5px red;">
+                        MEDAL.TV BLOCKED
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="error-badge">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        API Response Error
+                    </div>
+                </div>
+            </article>
 
-  <div class="card">
-    <div class="card-header">
-      <span>Java</span>
-      <h3>Crippling</h3>
-    </div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lQ8iKVVSggNvSKyEa/cr-MSxqclksNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+            <article class="card">
+                <div class="card-header">
+                    <div class="module-info">
+                        <span class="lang-tag">Java</span>
+                        <h3 class="module-title">Agony</h3>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="preview-container">
+                    <div class="glitch-overlay"></div>
+                    <div class="preview-graphic" style="background: radial-gradient(circle, #ef4444 0%, transparent 70%); top: 80%; left: 20%;"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="error-badge">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        Err_Blocked_By_Response
+                    </div>
+                </div>
+            </article>
 
-  <div class="card">
-    <div class="card-header">
-      <span>Java</span>
-      <h3>Revenge</h3>
+            <article class="card">
+                <div class="card-header">
+                    <div class="module-info">
+                        <span class="lang-tag">Java</span>
+                        <h3 class="module-title">Crippling</h3>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="preview-container">
+                    <div class="glitch-overlay"></div>
+                    <div class="preview-graphic" style="background: radial-gradient(circle, #f59e0b 0%, transparent 70%); top: 40%; left: 40%;"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="error-badge">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        Err_Blocked_By_Response
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <div class="module-info">
+                        <span class="lang-tag">Java</span>
+                        <h3 class="module-title">Revenge</h3>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="preview-container">
+                    <div class="glitch-overlay"></div>
+                    <div class="preview-graphic" style="background: radial-gradient(circle, #10b981 0%, transparent 70%); top: 10%; left: 90%;"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="error-badge">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        Err_Blocked_By_Response
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <div class="card-header">
+                    <div class="module-info">
+                        <span class="lang-tag">Java</span>
+                        <h3 class="module-title">Thief</h3>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                <div class="preview-container">
+                    <div class="glitch-overlay"></div>
+                    <div class="preview-graphic" style="background: radial-gradient(circle, #3b82f6 0%, transparent 70%); top: 60%; left: 10%;"></div>
+                </div>
+                <div class="card-footer">
+                    <div class="error-badge">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        Err_Blocked_By_Response
+                    </div>
+                </div>
+            </article>
+
+        </div>
     </div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lQ8n3KSegMRyPHiFf/cr-MSx5dFgsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
 
-  <div class="card">
-    <div class="card-header">
-      <span>Java</span>
-      <h3>Thief</h3>
-    </div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lQ8Ba1oLCqHHmfZg8/cr-MSxxeHYsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+    <script>
+        /**
+         * PARTICLE SYSTEM SCRIPT
+         * Creates a subtle floating particle background to enhance visual depth.
+         */
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray;
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 1</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lQ7KwQLJLA71Kks1y/cr-MSwzNnosNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        // Set canvas size
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 2</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lPJLs3U9svnm--lv-/cr-MSxKWDksNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 3</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lPjET1rcwmHCkpfNI/cr-MSx5Q2gsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = (Math.random() * 1.5) - 0.75;
+                this.speedY = (Math.random() * 1.5) - 0.75;
+                this.color = 'rgba(139, 92, 246, 0.3)'; // Primary color low opacity
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.01; // twinkle
+                if (this.size <= 0.2) this.size = Math.random() * 2;
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 4</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lPiPgiyHkhI9SJCfx/cr-MSxWRmIsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+                // Wrap around screen
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 5</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lPhQdYorKBxtaS8E-/cr-MSxjRFQsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        function init() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 15000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 6</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lOUS13fcVmwApu-cA/cr-MSxOOWssNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            
+            // Draw connections
+            connect();
+            requestAnimationFrame(animate);
+        }
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 7</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lOUfZWd7LwbHY3Bb3/cr-MSxqZTcsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        // Draw lines between particles if close enough
+        function connect() {
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
+                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+                    if (distance < (canvas.width/9) * (canvas.height/9)) {
+                        let opacityValue = 1 - (distance / 10000);
+                        ctx.strokeStyle = 'rgba(140, 100, 255,' + opacityValue * 0.15 + ')';
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
 
-  <div class="card">
-    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 8</h3></div>
-    <div class="media-container">
-      <iframe src="https://medal.tv/clip/lOU695rhunrJ3Z9IF/cr-MSx6OGosNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
-    </div>
-  </div>
+        init();
+        animate();
 
-</div>
+        // Add 3D Tilt Effect on Mouse Move
+        const cards = document.querySelectorAll('.card');
+        
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const cardX = rect.left + rect.width / 2;
+                const cardY = rect.top + rect.height / 2;
+                
+                // Only animate if mouse is somewhat close to avoid performance heavy calculations
+                const dist = Math.hypot(e.clientX - cardX, e.clientY - cardY);
+                if(dist < 500) {
+                   // Slight tilt toward mouse
+                }
+            });
+        });
 
-<div id="skript" class="content-section">
-  
-  <div class="card">
-    <div class="card-header">
-      <span>Skript</span>
-      <h3>Demo Video 1</h3>
-    </div>
-    <div class="media-container">
-      <iframe src="https://www.youtube.com/embed/c2LI4pcD5UQ" title="Elin4 Minecraft Demo 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header">
-      <span>Skript</span>
-      <h3>Demo Video 2</h3>
-    </div>
-    <div class="media-container">
-      <iframe src="https://www.youtube.com/embed/suP98zsJ20k" title="Elin4 Minecraft Demo 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <div class="card full-width">
-    <div class="card-header">
-      <span>Design</span>
-      <h3>Custom Menu Interface</h3>
-    </div>
-    <div class="media-container" style="padding-top: 0; height: auto;">
-      <img src="https://i.postimg.cc/ydy4rTf2/image-2025-12-30-210447061.png" alt="Custom Menu Screenshot" style="position: relative; height: auto; max-height: 600px; padding: 20px;">
-    </div>
-  </div>
-
-</div>
-
-<footer>
-  <p>&copy; 2026 Elin4 Development</p>
-</footer>
-
-<script>
-  function openTab(tabName) {
-    // Hide all sections
-    const sections = document.querySelectorAll('.content-section');
-    sections.forEach(section => {
-      section.classList.remove('active');
-    });
-
-    // Remove active class from buttons
-    const buttons = document.querySelectorAll('.tab-btn');
-    buttons.forEach(btn => {
-      btn.classList.remove('active');
-    });
-
-    // Show specific section
-    document.getElementById(tabName).classList.add('active');
-    
-    // Set active button (simple logic based on onclick text matching)
-    // In a real scenario, you'd pass the button 'this' reference
-    const activeBtn = Array.from(buttons).find(b => b.textContent.toLowerCase().includes(tabName));
-    if(activeBtn) activeBtn.classList.add('active');
-  }
-</script>
-
+    </script>
 </body>
 </html>
