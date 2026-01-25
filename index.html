@@ -2,87 +2,382 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Elin4 | Minecraft Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg-color: #09090b;
+    --card-bg: #18181b;
+    --accent: #a855f7;
+    --accent-hover: #9333ea;
+    --text-main: #e4e4e7;
+    --text-muted: #a1a1aa;
+    --border: #27272a;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
-    background: #0e0e12;
-    color: #e5e5e5;
-    font-family: Arial, sans-serif;
-    padding: 40px;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* --- Header Section --- */
+  header {
     text-align: center;
+    padding: 80px 20px 40px;
+    background: radial-gradient(circle at top, #2e1065 0%, var(--bg-color) 60%);
   }
 
   h1 {
-    color: #a855f7;
-    font-size: 3em;
+    font-size: 4em;
+    font-weight: 800;
+    letter-spacing: -2px;
     margin-bottom: 10px;
+    background: linear-gradient(to right, #c084fc, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 0px 30px rgba(168, 85, 247, 0.3);
   }
 
   p.subtitle {
-    color: #c0c0c0;
-    font-size: 1.2em;
-    margin-bottom: 40px;
+    color: var(--text-muted);
+    font-size: 1.25em;
+    max-width: 600px;
+    margin: 0 auto;
   }
 
-  .project {
-    background: #1b1b22;
+  /* --- Navigation / Tabs --- */
+  .tabs-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+    position: sticky;
+    top: 20px;
+    z-index: 100;
+  }
+
+  .tabs {
+    background: rgba(39, 39, 42, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 8px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: all 0.3s ease;
+  }
+
+  .tab-btn:hover {
+    color: #fff;
+  }
+
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+  }
+
+  /* --- Content Grid --- */
+  .content-section {
+    display: none; /* Hidden by default */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 100px;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .content-section.active {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- Cards --- */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px -10px rgba(168, 85, 247, 0.15);
+    border-color: var(--accent);
+  }
+
+  .card-header {
     padding: 20px;
-    border-radius: 10px;
-    margin: 30px auto;
-    max-width: 800px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-header h3 {
+    font-size: 1.1em;
+    color: #fff;
+  }
+
+  .card-header span {
+    font-size: 0.8em;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 800;
+  }
+
+  .media-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background: #000;
+  }
+
+  iframe, img, video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: cover;
+  }
+
+  .full-width {
+    grid-column: 1 / -1;
+  }
+
+  /* --- Footer --- */
+  footer {
     text-align: center;
-  }
-
-  .video, .screenshots {
-    margin-top: 40px;
-  }
-
-  iframe, video {
-    max-width: 100%;
-    border: 2px solid #2a2a2a;
-    border-radius: 8px;
-  }
-
-  .screenshots img {
-    max-width: 80%;
-    margin: 10px 0;
-    border: 2px solid #2a2a2a;
-    border-radius: 8px;
+    padding: 40px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    margin-top: auto;
   }
 
 </style>
 </head>
 <body>
 
-<h1>Elin4</h1>
-<p class="subtitle">Minecraft Skript / Plugin Developer</p>
+<header>
+  <h1>Elin4</h1>
+  <p class="subtitle">Minecraft Development Portfolio</p>
+</header>
 
-<div class="project video">
-  <h2>Demo Video 1</h2>
-  <iframe width="560" height="315"
-    src="https://www.youtube.com/embed/c2LI4pcD5UQ"
-    title="Elin4 Minecraft Demo 1"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
+<div class="tabs-container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab('java')">Java / Clips</button>
+    <button class="tab-btn" onclick="openTab('skript')">Skript / Demos</button>
+  </div>
 </div>
 
-<div class="project video">
-  <h2>Demo Video 2</h2>
-  <iframe width="560" height="315"
-    src="https://www.youtube.com/embed/suP98zsJ20k"
-    title="Elin4 Minecraft Demo 2"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
+<div id="java" class="content-section active">
+  
+  <div class="card">
+    <div class="card-header">
+      <span>Java</span>
+      <h3>Reaper</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lQ85HnWGtROGeFcP6/cr-MSxyZ1gsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Java</span>
+      <h3>Fragality</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lQ8bwrI8B1Vpayacg/cr-MSx5M0IsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Java</span>
+      <h3>Agony</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lQ8gEms6pWyS6Kboe/cr-MSw5OE4sNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Java</span>
+      <h3>Crippling</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lQ8iKVVSggNvSKyEa/cr-MSxqclksNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Java</span>
+      <h3>Revenge</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lQ8n3KSegMRyPHiFf/cr-MSx5dFgsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Java</span>
+      <h3>Thief</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lQ8Ba1oLCqHHmfZg8/cr-MSxxeHYsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 1</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lQ7KwQLJLA71Kks1y/cr-MSwzNnosNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 2</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lPJLs3U9svnm--lv-/cr-MSxKWDksNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 3</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lPjET1rcwmHCkpfNI/cr-MSx5Q2gsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 4</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lPiPgiyHkhI9SJCfx/cr-MSxWRmIsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 5</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lPhQdYorKBxtaS8E-/cr-MSxjRFQsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 6</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lOUS13fcVmwApu-cA/cr-MSxOOWssNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 7</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lOUfZWd7LwbHY3Bb3/cr-MSxqZTcsNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span>Java</span><h3>Gameplay Highlight 8</h3></div>
+    <div class="media-container">
+      <iframe src="https://medal.tv/clip/lOU695rhunrJ3Z9IF/cr-MSx6OGosNDgzMDI2Mzk4?autoplay=0&muted=0&loop=0&allow_fullscreen=true" allowfullscreen></iframe>
+    </div>
+  </div>
+
 </div>
 
-<div class="project screenshots">
-  <h2>Screenshot</h2>
-  <img src="https://i.postimg.cc/ydy4rTf2/image-2025-12-30-210447061.png" alt="Custom Menu Screenshot">
+<div id="skript" class="content-section">
+  
+  <div class="card">
+    <div class="card-header">
+      <span>Skript</span>
+      <h3>Demo Video 1</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://www.youtube.com/embed/c2LI4pcD5UQ" title="Elin4 Minecraft Demo 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Skript</span>
+      <h3>Demo Video 2</h3>
+    </div>
+    <div class="media-container">
+      <iframe src="https://www.youtube.com/embed/suP98zsJ20k" title="Elin4 Minecraft Demo 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <div class="card full-width">
+    <div class="card-header">
+      <span>Design</span>
+      <h3>Custom Menu Interface</h3>
+    </div>
+    <div class="media-container" style="padding-top: 0; height: auto;">
+      <img src="https://i.postimg.cc/ydy4rTf2/image-2025-12-30-210447061.png" alt="Custom Menu Screenshot" style="position: relative; height: auto; max-height: 600px; padding: 20px;">
+    </div>
+  </div>
+
 </div>
+
+<footer>
+  <p>&copy; 2026 Elin4 Development</p>
+</footer>
+
+<script>
+  function openTab(tabName) {
+    // Hide all sections
+    const sections = document.querySelectorAll('.content-section');
+    sections.forEach(section => {
+      section.classList.remove('active');
+    });
+
+    // Remove active class from buttons
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // Show specific section
+    document.getElementById(tabName).classList.add('active');
+    
+    // Set active button (simple logic based on onclick text matching)
+    // In a real scenario, you'd pass the button 'this' reference
+    const activeBtn = Array.from(buttons).find(b => b.textContent.toLowerCase().includes(tabName));
+    if(activeBtn) activeBtn.classList.add('active');
+  }
+</script>
 
 </body>
 </html>
