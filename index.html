@@ -3,606 +3,587 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS // JAVA CLIENT</title>
+    <title>Architect & Developer | Minecraft Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
-
     <style>
-        /* =========================================
-           CORE VARIABLES & RESET
-           ========================================= */
+        /* ========================================
+           CSS VARIABLES - BRANDING & COLORS
+           ========================================
+        */
         :root {
             --bg-dark: #050505;
-            --bg-panel: rgba(20, 20, 25, 0.6);
-            --primary: #8b5cf6; /* Violet */
-            --primary-glow: rgba(139, 92, 246, 0.5);
-            --accent: #f43f5e; /* Rose/Red for errors/aggression */
-            --accent-glow: rgba(244, 63, 94, 0.5);
+            --bg-card: #0f0f0f;
+            --accent-color: #00ff88; /* Minecraft-ish Green */
+            --accent-glow: rgba(0, 255, 136, 0.3);
             --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --border-color: rgba(255, 255, 255, 0.1);
-            --card-radius: 16px;
-            --transition-speed: 0.3s;
-            --font-display: 'Rajdhani', sans-serif;
-            --font-code: 'JetBrains Mono', monospace;
+            --text-dim: #a0a0a0;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
+        /* ========================================
+           GLOBAL STYLES & RESET
+           ========================================
+        */
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            outline: none;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            font-family: var(--font-display);
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
+            line-height: 1.6;
         }
 
-        /* Background Mesh/Noise Overlay */
-        body::before {
-            content: "";
+        /* ========================================
+           LOADING SCREEN (PRELOADER)
+           ========================================
+        */
+        #preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a78bfa;
-        }
-
-        /* =========================================
-           LAYOUT & CONTAINER
-           ========================================= */
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            z-index: 2;
-            width: 100%;
-        }
-
-        header {
-            margin-bottom: 60px;
-            text-align: center;
-            position: relative;
-        }
-
-        h1 {
-            font-family: var(--font-code);
-            font-size: 3rem;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px var(--primary-glow);
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* =========================================
-           GRID SYSTEM
-           ========================================= */
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            perspective: 1000px;
-        }
-
-        /* =========================================
-           CARD DESIGN (GLASSMORPHISM)
-           ========================================= */
-        .card {
-            background: var(--bg-panel);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: var(--card-radius);
-            padding: 24px;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
-            height: 380px;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            margin-top: 20px;
             position: relative;
             overflow: hidden;
-            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed);
         }
 
-        .card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 
-                        0 0 20px var(--primary-glow);
-            border-color: var(--primary);
-            z-index: 10;
-        }
-
-        /* Animated border gradient on hover */
-        .card::after {
-            content: '';
+        .loader-progress {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: var(--card-radius);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
-            pointer-events: none;
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+            animation: load 2.5s infinite;
         }
 
-        /* =========================================
-           CARD HEADER
-           ========================================= */
-        .card-header {
+        .loader-text {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes load {
+            0% { width: 0%; left: 0; }
+            50% { width: 100%; left: 0; }
+            100% { width: 0%; left: 100%; }
+        }
+
+        /* ========================================
+           NAVIGATION & HEADER
+           ========================================
+        */
+        header {
+            padding: 2rem 5%;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
         }
 
-        .module-info {
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        /* ========================================
+           HERO SECTION
+           ========================================
+        */
+        .hero {
+            height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at center, #111 0%, #050505 100%);
         }
 
-        .lang-tag {
-            font-family: var(--font-code);
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            display: inline-block;
-            background: rgba(139, 92, 246, 0.1);
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1;
         }
 
-        .module-title {
-            font-size: 1.8rem;
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: var(--accent-color);
+            color: #000;
+            text-decoration: none;
             font-weight: 700;
-            color: #fff;
-            margin: 0;
+            border-radius: 5px;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
         }
 
-        /* Status Dot */
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-            animation: pulse-red 2s infinite;
-        }
-        
-        .status-indicator.active {
-            background-color: #10b981; /* Green */
-            box-shadow: 0 0 10px #10b981;
-            animation: pulse-green 2s infinite;
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--accent-glow);
         }
 
-        /* =========================================
-           PREVIEW AREA (Replacing broken iframes)
-           ========================================= */
-        .preview-container {
-            flex-grow: 1;
-            background: #000;
-            border-radius: 8px;
-            position: relative;
+        /* ========================================
+           PORTFOLIO GRID & CARDS
+           ========================================
+        */
+        .container {
+            padding: 100px 10%;
+            min-height: 100vh;
+            display: none; /* Controlled by JS */
+        }
+
+        .container.active {
+            display: block;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-color);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            background: #1a1a1a;
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            cursor: pointer;
         }
 
-        /* Scanline effect for video preview */
-        .preview-container::before {
-            content: "NO SIGNAL";
-            font-family: var(--font-code);
-            color: rgba(255,255,255,0.2);
-            font-size: 1.5rem;
-            z-index: 2;
-            letter-spacing: 5px;
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: 0.3s;
         }
 
-        .preview-container::after {
-            content: " ";
-            display: block;
+        .project-card:hover .card-img img {
+            opacity: 0.9;
+        }
+
+        .play-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
+            font-size: 3rem;
+            color: var(--accent-color);
             pointer-events: none;
         }
 
-        .glitch-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(255, 255, 255, 0.05) 4px,
-                rgba(255, 255, 255, 0.05) 5px
-            );
-            animation: scroll-scan 10s linear infinite;
+        .card-body {
+            padding: 1.5rem;
         }
 
-        /* Different visual styles for different modules */
-        .preview-graphic {
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 60%);
-            opacity: 0.2;
-            animation: rotate-graphic 10s linear infinite;
+        .card-body h3 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
         }
 
-        /* =========================================
-           FOOTER / ERROR BAR
-           ========================================= */
-        .card-footer {
-            margin-top: 20px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .card-body p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
 
-        .error-badge {
-            background: rgba(244, 63, 94, 0.15);
-            color: var(--accent);
-            font-family: var(--font-code);
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             font-size: 0.7rem;
-            padding: 8px 12px;
-            border-radius: 4px;
-            border: 1px solid rgba(244, 63, 94, 0.3);
             text-transform: uppercase;
-            width: 100%;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
+            margin-right: 5px;
         }
 
-        .card:hover .error-badge {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        /* =========================================
-           ANIMATIONS
-           ========================================= */
-        @keyframes pulse-red {
-            0% { opacity: 1; box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.7); }
-            70% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(244, 63, 94, 0); }
-            100% { opacity: 1; box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
-        }
-
-        @keyframes scroll-scan {
-            0% { background-position: 0 0; }
-            100% { background-position: 0 100%; }
-        }
-
-        @keyframes rotate-graphic {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* Canvas for Particles */
-        #particle-canvas {
+        /* ========================================
+           MODAL SYSTEM (VIDEO PLAYER)
+           ========================================
+        */
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 0;
-            opacity: 0.6;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        /* =========================================
-           UTILITY CLASSES
-           ========================================= */
-        .hidden { display: none; }
-        .icon { width: 14px; height: 14px; fill: currentColor; }
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            width: 80%;
+            max-width: 1000px;
+            aspect-ratio: 16/9;
+            background: #000;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+        }
+
+        /* ========================================
+           FOOTER
+           ========================================
+        */
+        footer {
+            padding: 5rem 10% 2rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-socials a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-socials a:hover {
+            color: var(--accent-color);
+        }
 
     </style>
 </head>
 <body>
 
-    <canvas id="particle-canvas"></canvas>
-
-    <div class="main-container">
-        
-        <header>
-            <h1>Client Modules</h1>
-            <div class="subtitle">System Integrity: <span style="color: var(--accent)">Compromised</span></div>
-        </header>
-
-        <div class="module-grid">
-
-            <article class="card">
-                <div class="card-header">
-                    <div class="module-info">
-                        <span class="lang-tag">Java</span>
-                        <h3 class="module-title">Reaper</h3>
-                    </div>
-                    <div class="status-indicator"></div>
-                </div>
-                <div class="preview-container">
-                    <div class="glitch-overlay"></div>
-                    <div class="preview-graphic" style="background: radial-gradient(circle, #8b5cf6 0%, transparent 70%); top: 50%; left: 50%;"></div>
-                </div>
-                <div class="card-footer">
-                    <div class="error-badge">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        Connection Refused
-                    </div>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <div class="module-info">
-                        <span class="lang-tag">Java</span>
-                        <h3 class="module-title">Fragility</h3>
-                    </div>
-                    <div class="status-indicator"></div>
-                </div>
-                <div class="preview-container">
-                    <div class="glitch-overlay"></div>
-                    <div class="preview-graphic" style="background: radial-gradient(circle, #ec4899 0%, transparent 70%); top: 30%; left: 70%;"></div>
-                    <div style="position:absolute; z-index:5; text-align:center; font-family: var(--font-code); color: #fff; text-shadow: 0 0 5px red;">
-                        MEDAL.TV BLOCKED
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="error-badge">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        API Response Error
-                    </div>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <div class="module-info">
-                        <span class="lang-tag">Java</span>
-                        <h3 class="module-title">Agony</h3>
-                    </div>
-                    <div class="status-indicator"></div>
-                </div>
-                <div class="preview-container">
-                    <div class="glitch-overlay"></div>
-                    <div class="preview-graphic" style="background: radial-gradient(circle, #ef4444 0%, transparent 70%); top: 80%; left: 20%;"></div>
-                </div>
-                <div class="card-footer">
-                    <div class="error-badge">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        Err_Blocked_By_Response
-                    </div>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <div class="module-info">
-                        <span class="lang-tag">Java</span>
-                        <h3 class="module-title">Crippling</h3>
-                    </div>
-                    <div class="status-indicator"></div>
-                </div>
-                <div class="preview-container">
-                    <div class="glitch-overlay"></div>
-                    <div class="preview-graphic" style="background: radial-gradient(circle, #f59e0b 0%, transparent 70%); top: 40%; left: 40%;"></div>
-                </div>
-                <div class="card-footer">
-                    <div class="error-badge">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        Err_Blocked_By_Response
-                    </div>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <div class="module-info">
-                        <span class="lang-tag">Java</span>
-                        <h3 class="module-title">Revenge</h3>
-                    </div>
-                    <div class="status-indicator"></div>
-                </div>
-                <div class="preview-container">
-                    <div class="glitch-overlay"></div>
-                    <div class="preview-graphic" style="background: radial-gradient(circle, #10b981 0%, transparent 70%); top: 10%; left: 90%;"></div>
-                </div>
-                <div class="card-footer">
-                    <div class="error-badge">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        Err_Blocked_By_Response
-                    </div>
-                </div>
-            </article>
-
-            <article class="card">
-                <div class="card-header">
-                    <div class="module-info">
-                        <span class="lang-tag">Java</span>
-                        <h3 class="module-title">Thief</h3>
-                    </div>
-                    <div class="status-indicator"></div>
-                </div>
-                <div class="preview-container">
-                    <div class="glitch-overlay"></div>
-                    <div class="preview-graphic" style="background: radial-gradient(circle, #3b82f6 0%, transparent 70%); top: 60%; left: 10%;"></div>
-                </div>
-                <div class="card-footer">
-                    <div class="error-badge">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
-                        Err_Blocked_By_Response
-                    </div>
-                </div>
-            </article>
-
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="loader-text">Initializing Systems...</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
         </div>
     </div>
 
+    <header>
+        <a href="#" class="logo">DEV<span>PORTFOLIO</span></a>
+        <nav>
+            <div class="nav-link active" onclick="showTab('java', this)">Java</div>
+            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
+            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
+            <div class="nav-link" onclick="showTab('python', this)">Python</div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>CRAFTING <span>CODE</span></h1>
+        <p>Professional Full-Stack Developer & Minecraft Plugin Specialist. Transforming complex logic into seamless experiences.</p>
+        <a href="#java" class="btn-primary" onclick="showTab('java', document.querySelector('.nav-link'))">View My Work</a>
+    </section>
+
+    <div id="java" class="container active">
+        <h2 class="section-title">Java Projects</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')"> <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Custom+Enchants+Plugin" alt="Java Project">
+                </div>
+                <div class="card-body">
+                    <h3>AdvancedEnchants Pro</h3>
+                    <p>A high-performance NMS-based enchantment system with custom JSON configuration and packet-based visual effects.</p>
+                    <span class="tag">Spigot API</span>
+                    <span class="tag">NMS</span>
+                    <span class="tag">Maven</span>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <div id="skript" class="container">
+        <h2 class="section-title">Skript Architecture</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
+                    <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Core+System+Skript" alt="Skript Project">
+                </div>
+                <div class="card-body">
+                    <h3>Modular Core System</h3>
+                    <p>Complete server management suite written in Skript, featuring optimized variable handling and YAML data storage.</p>
+                    <span class="tag">Skript</span>
+                    <span class="tag">skBee</span>
+                    <span class="tag">sk-NBee</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="html" class="container">
+        <h2 class="section-title">Web Interfaces</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
+                    <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Store+Front+Design" alt="HTML Project">
+                </div>
+                <div class="card-body">
+                    <h3>Server Store Template</h3>
+                    <p>Fully responsive, CSS-animated store template for Minecraft servers with dynamic shopping cart logic.</p>
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="python" class="container">
+        <h2 class="section-title">Python Automation</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
+                    <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Discord+Bot+Python" alt="Python Project">
+                </div>
+                <div class="card-body">
+                    <h3>Bot-Integrated Analytics</h3>
+                    <p>A Discord bot that scrapes server logs and provides real-time player statistics and economy tracking via Matplotlib.</p>
+                    <span class="tag">Discord.py</span>
+                    <span class="tag">Pandas</span>
+                    <span class="tag">API</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideo()">&times; Close</span>
+            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="#">GitHub</a>
+            <a href="#">Discord</a>
+            <a href="#">YouTube</a>
+            <a href="#">LinkedIn</a>
+        </div>
+        <p>&copy; 2026 Minecraft Portfolio. All Rights Reserved.</p>
+    </footer>
+
     <script>
-        /**
-         * PARTICLE SYSTEM SCRIPT
-         * Creates a subtle floating particle background to enhance visual depth.
-         */
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        let particlesArray;
-
-        // Set canvas size
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        // Handle resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            init();
+        // 1. LOADING SCREEN DISMISSAL
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 2000); // 2-second showcase of the loader
         });
 
-        // Particle Class
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2;
-                this.speedX = (Math.random() * 1.5) - 0.75;
-                this.speedY = (Math.random() * 1.5) - 0.75;
-                this.color = 'rgba(139, 92, 246, 0.3)'; // Primary color low opacity
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.size > 0.2) this.size -= 0.01; // twinkle
-                if (this.size <= 0.2) this.size = Math.random() * 2;
+        // 2. TAB SWITCHING SYSTEM
+        function showTab(tabId, element) {
+            // Hide all containers
+            const containers = document.querySelectorAll('.container');
+            containers.forEach(container => container.classList.remove('active'));
 
-                // Wrap around screen
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Show selected container and highlight nav
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+
+            // Scroll slightly to content if on mobile
+            if(window.innerWidth < 768) {
+                window.scrollTo(0, window.innerHeight - 100);
             }
         }
 
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 15000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
+        // 3. VIDEO MODAL LOGIC
+        const modal = document.getElementById('videoModal');
+        const player = document.getElementById('videoPlayer');
+
+        function openVideo(videoId) {
+            // Construct the YouTube Embed URL
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            player.src = embedUrl;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeVideo() {
+            modal.classList.remove('active');
+            player.src = ''; // Stop video
+            document.body.style.overflow = 'auto'; // Re-enable scroll
+        }
+
+        // Close modal on background click
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeVideo();
             }
         }
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            
-            // Draw connections
-            connect();
-            requestAnimationFrame(animate);
-        }
+        // 4. ANIMATION ON SCROLL (SIMPLE)
+        const observerOptions = {
+            threshold: 0.1
+        };
 
-        // Draw lines between particles if close enough
-        function connect() {
-            for (let a = 0; a < particlesArray.length; a++) {
-                for (let b = a; b < particlesArray.length; b++) {
-                    let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x)) + 
-                                   ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
-                    if (distance < (canvas.width/9) * (canvas.height/9)) {
-                        let opacityValue = 1 - (distance / 10000);
-                        ctx.strokeStyle = 'rgba(140, 100, 255,' + opacityValue * 0.15 + ')';
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        init();
-        animate();
-
-        // Add 3D Tilt Effect on Mouse Move
-        const cards = document.querySelectorAll('.card');
-        
-        document.addEventListener('mousemove', (e) => {
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            cards.forEach(card => {
-                const rect = card.getBoundingClientRect();
-                const cardX = rect.left + rect.width / 2;
-                const cardY = rect.top + rect.height / 2;
-                
-                // Only animate if mouse is somewhat close to avoid performance heavy calculations
-                const dist = Math.hypot(e.clientX - cardX, e.clientY - cardY);
-                if(dist < 500) {
-                   // Slight tilt toward mouse
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
-        });
+        }, observerOptions);
 
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
     </script>
 </body>
 </html>
