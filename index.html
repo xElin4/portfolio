@@ -184,31 +184,46 @@
     .video-card {
       background: var(--card);
       border-radius: 24px;
-      overflow: hidden;
+      /* Crucial: Keeps video/images from leaking out of rounded corners */
+      overflow: hidden; 
       border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: 0.4s;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
     .video-card:hover {
       transform: translateY(-10px);
       border-color: var(--accent);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px var(--accent-glow);
     }
 
-    .video-card img {
+    /* Combined selector for both static images and potential iframes */
+    .video-card img, 
+    .video-card iframe {
       width: 100%;
       aspect-ratio: 16/9;
       object-fit: cover;
       opacity: 0.8;
       transition: 0.4s;
+      border: none;
+      display: block; /* Removes tiny white-space gap at bottom */
     }
 
-    .video-card:hover img { opacity: 1; }
+    .video-card:hover img,
+    .video-card:hover iframe { 
+      opacity: 1; 
+    }
 
     .video-card .info {
       padding: 20px;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      /* Modern text shadow for better readability over video */
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+      font-weight: 500;
+      color: var(--text);
+      z-index: 2;
     }
 
     /* BUTTONS / CONTACT */
