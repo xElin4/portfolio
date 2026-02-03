@@ -399,7 +399,13 @@
 
     // Video Logic
     function openVideo(id) {
-      document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+      const frame = document.getElementById('videoFrame');
+      frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+      // Ensure the iframe fills the modal frame
+      frame.style.width = '100%';
+      frame.style.height = '100%';
+      frame.style.border = '0';
+      frame.setAttribute('allowfullscreen', '');
       document.getElementById('videoModal').classList.add('active');
     }
 
