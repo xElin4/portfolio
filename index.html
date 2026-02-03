@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architect & Developer | Minecraft Portfolio</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Elina — Developer & Minecraft Plugins</title>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
-    
+
     <style>
         /* ========================================
            CSS VARIABLES - BRANDING & COLORS
@@ -14,11 +14,11 @@
         :root {
             --bg-dark: #050505;
             --bg-card: #0f0f0f;
-            --accent-color: #9b59ff; /* More purple */
+            --accent-color: #9b59ff; /* purple */
             --accent-glow: rgba(155, 89, 255, 0.25);
             --text-main: #ffffff;
             --text-dim: #a0a0a0;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
         }
@@ -27,13 +27,8 @@
            GLOBAL STYLES & RESET
            ========================================
         */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        html, body { height: 100%; }
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
@@ -47,395 +42,138 @@
            ========================================
         */
         #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
+            position: fixed; inset: 0;
             background: #000;
             z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.8s ease;
         }
 
-        .loader-content {
-            text-align: center;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 2px;
-            background: #222;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
+        .loader-content { text-align:center; }
+        .loader-bar { width: 200px; height: 2px; background: #222; margin-top: 20px; position: relative; overflow: hidden; }
         .loader-progress {
-            position: absolute;
-            height: 100%;
-            width: 0%;
-            background: var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-color);
-            animation: load 2.5s infinite;
+            position: absolute; height:100%; width:0%; background:var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color); animation: load 2.5s infinite;
         }
-
         .loader-text {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--accent-color);
-            letter-spacing: 2px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
+            font-family: 'JetBrains Mono', monospace; color: var(--accent-color); letter-spacing:2px; font-size:0.9rem; text-transform: uppercase;
         }
-
         @keyframes load {
-            0% { width: 0%; left: 0; }
-            50% { width: 100%; left: 0; }
-            100% { width: 0%; left: 100%; }
+            0% { width: 0%; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0%; left: 100%; }
         }
 
         /* ========================================
-           NAVIGATION & HEADER
+           HEADER
            ========================================
         */
         header {
-            padding: 1.2rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
+            padding: 1.2rem 5%; display:flex; justify-content:space-between; align-items:center;
+            position: fixed; width:100%; top:0; z-index:1000;
+            background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);
         }
-
-        .logo {
-            font-weight: 900;
-            font-size: 1.25rem;
-            letter-spacing: -1px;
-            color: var(--text-main);
-            text-decoration: none;
-        }
-
-        .logo span {
-            color: var(--accent-color);
-        }
-
-        /* top nav removed - tabs moved into each container */
+        .logo { font-weight:900; font-size:1.25rem; letter-spacing:-1px; color:var(--text-main); text-decoration:none; }
+        .logo span { color: var(--accent-color); }
 
         .nav-link {
-            text-decoration: none;
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-            padding: 8px 12px;
-            border-radius: 8px;
+            text-decoration: none; color: var(--text-dim); font-size: 0.85rem; font-weight:700;
+            text-transform: uppercase; transition: var(--transition); cursor: pointer; position: relative;
+            padding: 8px 12px; border-radius: 8px;
         }
-
         .nav-link:hover, .nav-link.active {
-            color: #000;
-            background: var(--accent-color);
-            box-shadow: 0 6px 18px var(--accent-glow);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 10px;
-            width: calc(100% - 20px);
-            height: 2px;
-            background: var(--accent-color);
-            border-radius: 2px;
+            color: #000; background: var(--accent-color); box-shadow: 0 6px 18px var(--accent-glow);
         }
 
         /* ========================================
-           HERO SECTION
+           HERO
            ========================================
         */
         .hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 10%;
-            background: radial-gradient(circle at center, #111 0%, #050505 100%);
-            margin-top: 64px; /* account for fixed header */
+            height: 80vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+            padding: 0 10%; background: radial-gradient(circle at center, #111 0%, #050505 100%);
+            margin-top: 64px;
         }
 
         .hero h1 {
-            font-size: clamp(2.2rem, 6vw, 3.5rem);
-            font-weight: 900;
-            margin-bottom: 1rem;
-            line-height: 1.05;
+            font-size: clamp(2rem, 6vw, 3rem); font-weight:900; margin-bottom: 1rem; line-height:1.05;
+            letter-spacing: -0.5px;
         }
-
-        .hero p {
-            font-size: 1.05rem;
-            color: var(--text-dim);
-            max-width: 700px;
-            margin-bottom: 2rem;
-        }
+        .hero h1 .accent { color: var(--accent-color); }
+        .hero p { font-size: 1.05rem; color: var(--text-dim); max-width:700px; margin-bottom:1.6rem; }
 
         .btn-primary {
-            padding: 0.9rem 2rem;
-            background: var(--accent-color);
-            color: #000;
-            text-decoration: none;
-            font-weight: 700;
-            border-radius: 6px;
-            transition: var(--transition);
-            box-shadow: 0 10px 20px rgba(155, 89, 255, 0.12);
+            padding: 0.9rem 2rem; background: var(--accent-color); color:#000; text-decoration:none; font-weight:700;
+            border-radius:6px; transition: var(--transition); box-shadow: 0 10px 20px rgba(155,89,255,0.12);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 30px var(--accent-glow);
-        }
+        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 30px var(--accent-glow); }
 
         /* ========================================
-           PORTFOLIO GRID & CARDS
+           SECTIONS, TABS & GRID
            ========================================
         */
-        .container {
-            padding: 80px 10%;
-            min-height: 60vh;
-            display: none; /* Controlled by JS */
-        }
-
-        .container.active {
-            display: block;
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .container { padding: 80px 10%; min-height:60vh; display:none; opacity:0; transform: translateY(10px); }
+        .container.active { display:block; opacity:1; transform: none; transition: opacity 0.6s ease, transform 0.6s ease; }
 
         .section-title {
-            font-size: 2.25rem;
-            margin-bottom: 1rem;
-            border-left: 5px solid var(--accent-color);
-            padding-left: 18px;
-            margin-top: 10px;
+            font-size: 2.25rem; margin-bottom: 1rem; border-left: 5px solid var(--accent-color); padding-left: 18px; margin-top:10px;
+            opacity: 0; transform: translateX(-30px);
+            transition: transform 0.6s cubic-bezier(.2,.9,.2,1), opacity 0.6s;
         }
+        .section-title.in-view { opacity:1; transform: translateX(0); }
 
-        /* Local tab bar (moved from top into each container) */
         .tab-bar {
-            display: flex;
-            gap: 0.6rem;
-            margin: 1rem 0 2rem 0;
-            flex-wrap: wrap;
+            display:flex; gap:0.6rem; margin:1rem 0 2rem 0; flex-wrap:wrap;
+            opacity: 0; transform: translateY(-12px); transition: transform 0.5s ease, opacity 0.5s;
         }
+        .tab-bar.in-view { opacity:1; transform: translateY(0); }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2.5rem;
-        }
+        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:2rem; }
 
         .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: var(--transition);
-            position: relative;
+            background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 12px; overflow:hidden;
+            position: relative; transition: transform 0.6s cubic-bezier(.2,.9,.2,1), box-shadow 0.4s;
+            opacity: 0; transform: translateY(30px) rotate(var(--initial-rotate, 0deg));
         }
+        .project-card.in-view { opacity:1; transform: translateY(0) rotate(0); }
+        .project-card:hover { transform: scale(1.02); border-color: var(--accent-color); box-shadow: 0 20px 40px rgba(155,89,255,0.06); }
 
-        .project-card:hover {
-            transform: scale(1.02);
-            border-color: var(--accent-color);
-            box-shadow: 0 20px 40px rgba(155,89,255,0.06);
-        }
+        .card-img { width:100%; height:200px; background:#111; display:flex; align-items:center; justify-content:center; position:relative; cursor:pointer; }
+        .card-img img { width:100%; height:100%; object-fit:cover; opacity:0.9; transition: 0.25s; display:block; }
+        .play-overlay { position:absolute; font-size:3rem; color:var(--accent-color); pointer-events:none; text-shadow: 0 6px 20px rgba(155,89,255,0.2); }
 
-        .card-img {
-            width: 100%;
-            height: 200px;
-            background: #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-            transition: 0.3s;
-        }
-
-        .project-card:hover .card-img img {
-            opacity: 0.95;
-        }
-
-        .play-overlay {
-            position: absolute;
-            font-size: 3rem;
-            color: var(--accent-color);
-            pointer-events: none;
-            text-shadow: 0 6px 20px rgba(155,89,255,0.2);
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        .card-body h3 {
-            margin-bottom: 0.5rem;
-            color: var(--accent-color);
-        }
-
-        .card-body p {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 4px 12px;
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            margin-right: 5px;
-        }
+        .card-body { padding:1.25rem; }
+        .card-body h3 { margin-bottom:0.5rem; color:var(--accent-color); }
+        .card-body p { color:var(--text-dim); font-size:0.95rem; margin-bottom:1rem; }
+        .tag { display:inline-block; padding:4px 12px; background:var(--glass); border:1px solid var(--glass-border); border-radius:20px; font-size:0.7rem; text-transform:uppercase; margin-right:5px; }
 
         /* ========================================
-           MODAL SYSTEM (VIDEO PLAYER / MESSAGES)
+           MODAL (VIDEO / MESSAGES)
            ========================================
         */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 2000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            padding: 2rem;
-        }
-
-        .modal.active {
-            display: flex;
-            opacity: 1;
-        }
-
+        .modal { position:fixed; inset:0; background: rgba(0,0,0,0.95); z-index:2000; display:none; justify-content:center; align-items:center; padding:2rem; }
+        .modal.active { display:flex; }
         .modal-content {
-            width: 90%;
-            max-width: 1000px;
-            aspect-ratio: 16/9;
-            background: #000;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
+            width:90%; max-width:1000px; aspect-ratio:16/9; background:#000; position:relative; border-radius:8px; overflow:hidden; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            display:flex; align-items:center; justify-content:center;
         }
-
-        .modal-content iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: block;
-        }
-
-        #modalMessage {
-            width: 100%;
-            height: 100%;
-            display: none;
-            color: var(--text-main);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        #modalMessage h2 {
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
-        }
-
-        #modalMessage p {
-            color: var(--text-dim);
-            max-width: 700px;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: -46px;
-            right: 0;
-            color: #fff;
-            font-size: 1.1rem;
-            cursor: pointer;
-            font-family: Arial, sans-serif;
-            transition: 0.2s;
-            padding: 8px 12px;
-            background: transparent;
-        }
-
-        .close-modal:hover {
-            color: var(--accent-color);
-        }
+        .modal-content iframe { width:100%; height:100%; border:none; display:block; }
+        #modalMessage { width:100%; height:100%; display:none; padding:2rem; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+        #modalMessage h2 { color:var(--accent-color); margin-bottom:0.5rem; }
+        #modalMessage p { color:var(--text-dim); max-width:700px; }
+        .close-modal { position:absolute; top:-46px; right:0; color:#fff; font-size:1.1rem; cursor:pointer; font-family:Arial, sans-serif; transition:0.2s; padding:8px 12px; background:transparent; }
+        .close-modal:hover { color:var(--accent-color); }
 
         /* ========================================
            FOOTER
            ========================================
         */
-        footer {
-            padding: 5rem 10% 2rem;
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-        }
+        footer { padding:5rem 10% 2rem; text-align:center; border-top:1px solid var(--glass-border); }
+        .footer-socials { display:flex; justify-content:center; gap:2rem; margin-bottom:2rem; }
+        .footer-socials a { color:var(--text-dim); text-decoration:none; transition:0.3s; }
+        .footer-socials a:hover { color:var(--accent-color); }
 
-        .footer-socials {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-socials a {
-            color: var(--text-dim);
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .footer-socials a:hover {
-            color: var(--accent-color);
-        }
-
-        @media (max-width: 900px) {
-            .card-img { height: 180px; }
-            .modal-content { width: 100%; aspect-ratio: 16/9; }
+        @media (max-width:900px) {
+            .card-img { height:180px; }
+            .modal-content { width:100%; aspect-ratio:16/9; }
         }
     </style>
 </head>
@@ -444,58 +182,51 @@
     <div id="preloader">
         <div class="loader-content">
             <div class="loader-text">Initializing Systems...</div>
-            <div class="loader-bar">
-                <div class="loader-progress"></div>
-            </div>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
         </div>
     </div>
 
     <header>
         <a href="#" class="logo">ELINA<span>DEV</span></a>
-        <!-- top nav intentionally removed — tabs are now inside each section -->
     </header>
 
-    <section class="hero">
-        <h1>CRAFTING <span>CODE</span></h1>
+    <section class="hero" id="hero">
+        <h1><span class="accent">ELINA</span> — CRAFTING EXPERIENCES</h1>
         <p>My name is Elina. I have been coding for 6+ years and I work with Java, Skript, HTML, and Python — below are examples of my work and projects.</p>
-        <a href="#java" class="btn-primary" onclick="showTab('java', document.querySelector('#java .tab-bar .nav-link'))">View My Work</a>
+        <a href="#java" class="btn-primary" id="viewWorkBtn">View My Work</a>
     </section>
 
-    <div id="java" class="container active">
+    <!-- NOTE: no container is active by default so visiting or refreshing will show the hero at top -->
+    <div id="java" class="container">
         <h2 class="section-title">Java Projects</h2>
 
-        <!-- Local tab bar for quick navigation placed inside the content area -->
         <div class="tab-bar">
-            <div class="nav-link active" onclick="showTab('java', this)">Java</div>
+            <div class="nav-link" onclick="showTab('java', this)">Java</div>
             <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
             <div class="nav-link" onclick="showTab('html', this)">HTML</div>
             <div class="nav-link" onclick="showTab('python', this)">Python</div>
         </div>
 
         <div class="grid">
-            <div class="project-card">
+            <div class="project-card" style="--initial-rotate:-1.8deg">
                 <div class="card-img" onclick="openVideo('42O-uxmgUng')"> <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=AdvancedEnchants+Pro" alt="AdvancedEnchants Pro">
+                    <img src="https://img.youtube.com/vi/42O-uxmgUng/hqdefault.jpg" alt="AdvancedEnchants Pro">
                 </div>
                 <div class="card-body">
                     <h3>AdvancedEnchants Pro</h3>
                     <p>A high-performance NMS-based enchantment system with custom JSON configuration and packet-based visual effects.</p>
-                    <span class="tag">Spigot API</span>
-                    <span class="tag">NMS</span>
-                    <span class="tag">Maven</span>
+                    <span class="tag">Spigot API</span><span class="tag">NMS</span><span class="tag">Maven</span>
                 </div>
             </div>
 
-            <div class="project-card">
+            <div class="project-card" style="--initial-rotate:1.6deg">
                 <div class="card-img" onclick="openVideo('HXgp96SzYrk')"> <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Networking+Tool" alt="Java Project 2">
+                    <img src="https://img.youtube.com/vi/HXgp96SzYrk/hqdefault.jpg" alt="PacketFX Toolkit">
                 </div>
                 <div class="card-body">
                     <h3>PacketFX Toolkit</h3>
                     <p>Advanced packet manipulation tools and visual utilities for real-time effect rendering and optimization strategies.</p>
-                    <span class="tag">Bukkit</span>
-                    <span class="tag">Packets</span>
-                    <span class="tag">Performance</span>
+                    <span class="tag">Bukkit</span><span class="tag">Packets</span><span class="tag">Performance</span>
                 </div>
             </div>
         </div>
@@ -506,37 +237,31 @@
 
         <div class="tab-bar">
             <div class="nav-link" onclick="showTab('java', this)">Java</div>
-            <div class="nav-link active" onclick="showTab('skript', this)">Skript</div>
+            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
             <div class="nav-link" onclick="showTab('html', this)">HTML</div>
             <div class="nav-link" onclick="showTab('python', this)">Python</div>
         </div>
 
         <div class="grid">
-            <div class="project-card">
-                <div class="card-img" onclick="openVideo('c2LI4pcD5UQ')">
-                    <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Modular+Core+System" alt="Skript Project 1">
+            <div class="project-card" style="--initial-rotate:-1.6deg">
+                <div class="card-img" onclick="openVideo('c2LI4pcD5UQ')"> <span class="play-overlay">▶</span>
+                    <img src="https://img.youtube.com/vi/c2LI4pcD5UQ/hqdefault.jpg" alt="Modular Core System">
                 </div>
                 <div class="card-body">
                     <h3>Modular Core System</h3>
                     <p>Complete server management suite written in Skript, featuring optimized variable handling and YAML data storage.</p>
-                    <span class="tag">Skript</span>
-                    <span class="tag">skBee</span>
-                    <span class="tag">YAML</span>
+                    <span class="tag">Skript</span><span class="tag">skBee</span><span class="tag">YAML</span>
                 </div>
             </div>
 
-            <div class="project-card">
-                <div class="card-img" onclick="openVideo('suP98zsJ20k')">
-                    <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Event+Framework+Skript" alt="Skript Project 2">
+            <div class="project-card" style="--initial-rotate:1.4deg">
+                <div class="card-img" onclick="openVideo('suP98zsJ20k')"> <span class="play-overlay">▶</span>
+                    <img src="https://img.youtube.com/vi/suP98zsJ20k/hqdefault.jpg" alt="Event Framework">
                 </div>
                 <div class="card-body">
                     <h3>Event Framework</h3>
                     <p>Reusable event-handling patterns and optimized performance logic for large multiplayer servers.</p>
-                    <span class="tag">Skript</span>
-                    <span class="tag">Performance</span>
-                    <span class="tag">Scaling</span>
+                    <span class="tag">Skript</span><span class="tag">Performance</span><span class="tag">Scaling</span>
                 </div>
             </div>
         </div>
@@ -548,22 +273,19 @@
         <div class="tab-bar">
             <div class="nav-link" onclick="showTab('java', this)">Java</div>
             <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
-            <div class="nav-link active" onclick="showTab('html', this)">HTML</div>
+            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
             <div class="nav-link" onclick="showTab('python', this)">Python</div>
         </div>
 
         <div class="grid">
-            <div class="project-card">
-                <div class="card-img" onclick="openComingSoon()">
-                    <span class="play-overlay">🕒</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Store+Front+Design" alt="HTML Project">
+            <div class="project-card" style="--initial-rotate:-1.4deg">
+                <div class="card-img" onclick="openComingSoon()"> <span class="play-overlay">🕒</span>
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Store+Front+Design" alt="Store Front Design">
                 </div>
                 <div class="card-body">
                     <h3>Server Store Template</h3>
                     <p>Coming soon — responsive store template with dynamic cart logic and polished CSS animations.</p>
-                    <span class="tag">HTML5</span>
-                    <span class="tag">CSS3</span>
-                    <span class="tag">JavaScript</span>
+                    <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span>
                 </div>
             </div>
         </div>
@@ -576,102 +298,113 @@
             <div class="nav-link" onclick="showTab('java', this)">Java</div>
             <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
             <div class="nav-link" onclick="showTab('html', this)">HTML</div>
-            <div class="nav-link active" onclick="showTab('python', this)">Python</div>
+            <div class="nav-link" onclick="showTab('python', this)">Python</div>
         </div>
 
         <div class="grid">
-            <div class="project-card">
-                <div class="card-img" onclick="openComingSoon()">
-                    <span class="play-overlay">🕒</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Discord+Bot+Python" alt="Python Project">
+            <div class="project-card" style="--initial-rotate:1.8deg">
+                <div class="card-img" onclick="openComingSoon()"> <span class="play-overlay">🕒</span>
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Discord+Bot+Python" alt="Discord Bot Python">
                 </div>
                 <div class="card-body">
                     <h3>Bot-Integrated Analytics</h3>
                     <p>Coming soon — a discord bot that scrapes server logs and provides real-time analytics and visualizations.</p>
-                    <span class="tag">Discord.py</span>
-                    <span class="tag">Pandas</span>
-                    <span class="tag">API</span>
+                    <span class="tag">Discord.py</span><span class="tag">Pandas</span><span class="tag">API</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="videoModal" class="modal">
+    <div id="videoModal" class="modal" aria-hidden="true">
         <div class="modal-content">
             <span class="close-modal" onclick="closeVideo()">&times; Close</span>
             <iframe id="videoPlayer" src="" allowfullscreen></iframe>
             <div id="modalMessage">
                 <h2>Coming Soon</h2>
-                <p>This feature or demo is coming soon — stay tuned! If you'd like a preview, contact me directly on GitHub or Discord.</p>
+                <p>This feature or demo is coming soon — stay tuned! If you'd like a preview, contact me on GitHub or Discord.</p>
             </div>
         </div>
     </div>
 
     <footer>
         <div class="footer-socials">
-            <a href="#">GitHub</a>
-            <a href="#">Discord</a>
-            <a href="#">YouTube</a>
-            <a href="#">LinkedIn</a>
+            <a href="#">GitHub</a><a href="#">Discord</a><a href="#">YouTube</a><a href="#">LinkedIn</a>
         </div>
         <p>&copy; 2026 Minecraft Portfolio. All Rights Reserved.</p>
     </footer>
 
     <script>
-        // 1. LOADING SCREEN DISMISSAL
+        // PRELOAD & SCROLL TO HERO ON LOAD
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
             setTimeout(() => {
                 preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 800);
-            }, 1200); // slightly shorter showcase
+                setTimeout(() => { preloader.style.display = 'none'; }, 700);
+                // ensure we are at the top / hero after preloader
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 900);
         });
 
-        // 2. TAB SWITCHING SYSTEM
+        // SIMPLE TAB SWITCHING
         function showTab(tabId, element) {
-            // Hide all containers
-            const containers = document.querySelectorAll('.container');
-            containers.forEach(container => container.classList.remove('active'));
+            // hide all containers
+            document.querySelectorAll('.container').forEach(c => {
+                c.classList.remove('active');
+                // clear in-view for title/tabbar so animation can retrigger when reopened
+                const t = c.querySelector('.section-title'); if (t) t.classList.remove('in-view');
+                const bar = c.querySelector('.tab-bar'); if (bar) bar.classList.remove('in-view');
+                // remove active highlight inside each tab-bar
+                const links = c.querySelectorAll('.tab-bar .nav-link');
+                links.forEach(l => l.classList.remove('active'));
+            });
 
-            // Remove active class from all nav links (all local tab-bars)
-            const navLinks = document.querySelectorAll('.tab-bar .nav-link');
-            navLinks.forEach(link => link.classList.remove('active'));
-
-            // Show selected container and highlight nav
+            // show requested container
             const target = document.getElementById(tabId);
             if (!target) return;
             target.classList.add('active');
 
-            // If the clicked element is one of the local nav links, activate it.
-            // Otherwise, try to find the corresponding local nav link inside the activated container.
+            // mark selected tab in that container
             if (element && element.classList && element.classList.contains('nav-link')) {
+                // clicked a local tab directly
                 element.classList.add('active');
             } else {
-                const inside = target.querySelector('.tab-bar .nav-link');
+                // fallback: select the local tab corresponding to the target container name
+                const inside = target.querySelector(`.tab-bar .nav-link`);
                 if (inside) inside.classList.add('active');
             }
 
-            // Scroll slightly to content if on mobile
-            if(window.innerWidth < 768) {
-                window.scrollTo({ top: window.innerHeight - 100, behavior: 'smooth' });
-            }
+            // animate section title & tabbar into view
+            const secTitle = target.querySelector('.section-title');
+            const tabbar = target.querySelector('.tab-bar');
+            if (secTitle) setTimeout(() => secTitle.classList.add('in-view'), 60);
+            if (tabbar) setTimeout(() => tabbar.classList.add('in-view'), 130);
+
+            // smooth scroll to the container (so it feels like moving down from hero)
+            const offset = Math.max(0, (target.getBoundingClientRect().top + window.scrollY) - 60);
+            window.scrollTo({ top: offset, behavior: 'smooth' });
         }
 
-        // 3. VIDEO & MESSAGE MODAL LOGIC
+        // LINK FROM HERO BUTTON: open Java tab and highlight its tab
+        document.getElementById('viewWorkBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            // find the Java container's local nav link that says "Java"
+            const javaFirstNav = document.querySelector('#java .tab-bar .nav-link');
+            showTab('java', javaFirstNav);
+        });
+
+        // VIDEO & COMING-SOON MODAL
         const modal = document.getElementById('videoModal');
         const player = document.getElementById('videoPlayer');
         const modalMessage = document.getElementById('modalMessage');
 
         function openVideo(videoId) {
-            // Construct the YouTube Embed URL
-            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
             player.src = embedUrl;
             player.style.display = 'block';
             modalMessage.style.display = 'none';
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
         }
 
         function openComingSoon() {
@@ -679,44 +412,84 @@
             player.style.display = 'none';
             modalMessage.style.display = 'flex';
             modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
         }
 
         function closeVideo() {
             modal.classList.remove('active');
-            player.src = ''; // Stop video
-            document.body.style.overflow = 'auto'; // Re-enable scroll
-            // hide both for cleanliness
+            player.src = '';
             player.style.display = 'none';
             modalMessage.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
         }
 
-        // Close modal on background click
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeVideo();
-            }
-        }
+        // close modal on background click
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) closeVideo();
+        });
 
-        // 4. ANIMATION ON SCROLL (SIMPLE)
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
+        // SCROLL ANIMATION: IntersectionObserver with staggered reveal
+        const observerOptions = { threshold: 0.12 };
+        const cardObserver = new IntersectionObserver((entries) => {
+            // we want to stagger reveals per container
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                if (!entry.isIntersecting) return;
+                const card = entry.target;
+                // find its index among visible cards in same grid
+                const parentGrid = card.closest('.grid');
+                let index = 0;
+                if (parentGrid) {
+                    const cards = Array.from(parentGrid.querySelectorAll('.project-card'));
+                    index = cards.indexOf(card);
                 }
+                // staggered delay based on index
+                card.style.transitionDelay = `${Math.min(10, index) * 80}ms`;
+                card.classList.add('in-view');
+                cardObserver.unobserve(card);
             });
         }, observerOptions);
 
+        // Observe all cards
         document.querySelectorAll('.project-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease-out';
-            observer.observe(card);
+            cardObserver.observe(card);
+        });
+
+        // Also animate section titles & tabbars when their container becomes active or scrolled into view
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sec = entry.target.querySelector('.section-title');
+                    const bar = entry.target.querySelector('.tab-bar');
+                    if (sec) sec.classList.add('in-view');
+                    if (bar) bar.classList.add('in-view');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.container').forEach(c => sectionObserver.observe(c));
+
+        // Optional: keyboard escape to close modal
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) closeVideo();
+        });
+
+        // Ensure clicking a tab in any container will switch to that container and set the active look (works for all tab bars)
+        document.querySelectorAll('.tab-bar .nav-link').forEach(el => {
+            el.addEventListener('click', (evt) => {
+                // the onclick inline also calls showTab; this ensures clicking sets visual state reliably
+                // determine the target container id by reading the text inside (lowercase)
+                const text = el.textContent.trim().toLowerCase();
+                if (['java','skript','html','python'].includes(text)) {
+                    showTab(text, el);
+                }
+            });
+        });
+
+        // When visiting/refreshing, keep user at top (hero). If you'd like the last-opened tab to persist, we can store it in localStorage.
+        window.addEventListener('beforeunload', () => {
+            // nothing stored for now; leaving this hook available
         });
     </script>
 </body>
