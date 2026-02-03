@@ -14,7 +14,7 @@
         :root {
             --bg-dark: #050505;
             --bg-card: #0f0f0f;
-            --accent-color: #00ff88; /* Minecraft-ish Green */
+            --accent-color: #9d4edd; /* Minecraft-ish Green */
             --accent-glow: rgba(0, 255, 136, 0.3);
             --text-main: #ffffff;
             --text-dim: #a0a0a0;
@@ -102,17 +102,15 @@
            ========================================
         */
         header {
-            padding: 2rem 5%;
+            padding: 4rem 5% 1rem 5%; /* More top padding to move it down */
             display: flex;
-            justify-content: space-between;
+            flex-direction: column; /* Stack Logo and Nav vertically */
+            justify-content: center;
             align-items: center;
-            position: fixed;
+            position: relative; /* Changed from fixed so it stays at the top of the page */
             width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: rgba(5, 5, 5, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
+            background: transparent;
+            border-bottom: none;
         }
 
         .logo {
@@ -129,7 +127,15 @@
 
         nav {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .nav-link:not(:last-child)::after {
+            content: '|';
+            margin-left: 1.5rem;
+            color: var(--text-dim);
+            pointer-events: none;
         }
 
         .nav-link {
@@ -144,11 +150,12 @@
         }
 
         .nav-link:hover, .nav-link.active {
-            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 5px;
         }
 
         .nav-link.active::after {
-            content: '';
+            content: ''; 
             position: absolute;
             bottom: -5px;
             left: 0;
@@ -207,9 +214,8 @@
            ========================================
         */
         .container {
-            padding: 100px 10%;
-            min-height: 100vh;
-            display: none; /* Controlled by JS */
+            padding: 20px 10%; /* Reduced from 100px to match your sketch */
+            min-height: auto;
         }
 
         .container.active {
@@ -223,10 +229,9 @@
         }
 
         .section-title {
-            font-size: 3rem;
-            margin-bottom: 3rem;
-            border-left: 5px solid var(--accent-color);
-            padding-left: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent-color);
         }
 
         .grid {
