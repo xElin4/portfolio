@@ -3,363 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elina | 6 Years of Coding</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>ELINA | PORTFOLIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
-        /* ========================================
-           EXTENSIVE CSS STYLING & ANIMATIONS
-           ========================================
-        */
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --bg: #0f0f13;
-            --card-bg: #1e1e26;
-            --text: #ffffff;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --accent: #00f2ff;
+            --bg-dark: #050505;
+            --card-glass: rgba(255, 255, 255, 0.05);
+            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-dark); 
+            color: white; 
+            font-family: 'Montserrat', sans-serif; 
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        /* --- Loading Screen --- */
-        #loader {
-            position: fixed;
-            height: 100vh;
-            width: 100vw;
-            background: var(--bg);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1s ease;
-        }
-
-        .spinner {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(255, 255, 255, 0.1);
-            border-top: 8px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite, glow 2s ease-in-out infinite;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px var(--primary); } 50% { box-shadow: 0 0 30px var(--primary); } }
-
-        /* --- Navigation Tabs --- */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 10px 30px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-link {
-            color: #ccc;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            cursor: pointer;
-            padding: 5px 15px;
-            border-radius: 20px;
-        }
-
-        .nav-link.active, .nav-link:hover {
-            color: white;
-            background: var(--primary);
-            transform: scale(1.1);
-        }
-
-        /* --- Sections --- */
-        section {
-            min-height: 100vh;
-            padding: 120px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(50px);
-            transition: 1s ease;
-        }
-
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        h1 { font-size: 4rem; margin-bottom: 20px; text-align: center; background: linear-gradient(to right, #6c5ce7, #00d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p { max-width: 800px; text-align: center; line-height: 1.8; color: #aaa; font-size: 1.1rem; }
-
-        /* --- Video Grid --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 50px;
-        }
-
-        .video-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: var(--transition);
-            aspect-ratio: 16/9;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .video-card:hover {
-            transform: scale(1.05) translateY(-10px);
-            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
-        }
-
-        .thumbnail {
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            transition: 0.5s;
-        }
-
-        .video-card:hover .thumbnail {
-            filter: brightness(0.4) scale(1.1);
-        }
-
-        .play-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            font-size: 50px;
-            color: white;
-            transition: var(--transition);
-        }
-
-        .video-card:hover .play-btn { transform: translate(-50%, -50%) scale(1); }
-
-        .card-label {
-            position: absolute;
-            bottom: 15px;
-            left: 15px;
-            background: var(--primary);
-            padding: 5px 15px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        /* --- Modal System --- */
-        .modal {
+        /* --- COOL BACKGROUND --- */
+        #bg-canvas {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
+            z-index: -1;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        }
+
+        /* --- TOP LEFT LOGO --- */
+        .logo {
+            position: fixed;
+            top: 30px;
+            left: 40px;
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            color: var(--accent);
+            text-transform: uppercase;
             z-index: 1000;
+            text-shadow: 0 0 15px var(--accent);
+        }
+
+        /* --- LOADING SCREEN --- */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .load-text {
+            font-family: 'Syncopate';
+            font-size: 2rem;
+            margin-top: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+        /* --- MAIN PAGE (BIGGY BIG BIG) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
+        }
+
+        .hero h1 {
+            font-size: clamp(4rem, 15vw, 10rem);
+            font-weight: 900;
+            line-height: 0.8;
+            text-transform: uppercase;
+            background: linear-gradient(180deg, #fff 30%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.3));
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        /* --- CATEGORY TABS --- */
+        .tab-container {
+            position: sticky;
+            top: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 900;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-family: 'Syncopate';
+            font-size: 0.8rem;
+            transition: var(--transition);
+            border-radius: 4px;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--accent);
+            color: black;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        /* --- CONTENT SECTIONS --- */
+        section {
+            padding: 100px 5%;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            border-left: 8px solid var(--accent);
+            padding-left: 20px;
+        }
+
+        /* --- SQUARE VIDEO GRID --- */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .square-card {
+            position: relative;
+            aspect-ratio: 1 / 1; /* FORCED SQUARE */
+            background: var(--card-glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .square-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.8s;
+            filter: grayscale(80%);
+        }
+
+        .square-card:hover .thumb-img {
+            filter: grayscale(0%) scale(1.1);
+            opacity: 0.4;
+        }
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .square-card:hover .play-overlay { opacity: 1; }
+
+        .card-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-family: 'Syncopate';
+            font-size: 0.9rem;
+        }
+
+        /* --- MODAL --- */
+        #modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
             display: none;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transition: 0.5s;
         }
-
-        .modal.active { display: flex; opacity: 1; }
-
-        .modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 1000px;
-            aspect-ratio: 16/9;
-            background: black;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 50px var(--primary);
-        }
-
-        .close-modal {
+        .modal-inner { width: 90%; max-width: 1200px; position: relative; aspect-ratio: 16/9; }
+        .close-btn {
             position: absolute;
-            top: -50px;
-            right: 0;
-            color: white;
-            font-size: 35px;
-            cursor: pointer;
-            transition: 0.3s;
+            top: -60px; right: 0;
+            font-size: 3rem; color: white; cursor: pointer;
         }
 
-        .close-modal:hover { color: var(--primary); transform: rotate(90deg); }
-
-        iframe { width: 100%; height: 100%; border: none; }
-
-        /* --- Status Label (Coming Soon) --- */
         .coming-soon {
-            padding: 100px;
-            border: 2px dashed rgba(255,255,255,0.1);
-            border-radius: 30px;
-            text-align: center;
-            font-size: 2rem;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            nav { width: 90%; overflow-x: auto; font-size: 0.8rem; }
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #333;
+            font-family: 'Syncopate';
+            color: #333;
         }
     </style>
 </head>
 <body>
 
+    <canvas id="bg-canvas"></canvas>
+    <div class="logo">Elina</div>
+
     <div id="loader">
-        <div class="spinner"></div>
+        <div class="load-text">LOADING...</div>
     </div>
 
-    <nav>
-        <a href="#intro" class="nav-link active">Intro</a>
-        <a href="#java" class="nav-link">Java</a>
-        <a href="#skript" class="nav-link">Skript</a>
-        <a href="#python" class="nav-link">Python</a>
-        <a href="#html" class="nav-link">HTML</a>
-    </nav>
+    <header class="hero">
+        <p>Est. 2019 — 17 Years Old</p>
+        <h1>ELINA</h1>
+        <p>6 Years of Development Experience</p>
+    </header>
 
-    <div class="modal" id="videoModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeVideo()">&times;</span>
-            <div id="playerContainer"></div>
-        </div>
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="scrollToSection('java')">JAVA</button>
+        <button class="tab-btn" onclick="scrollToSection('skript')">SKRIPT</button>
+        <button class="tab-btn" onclick="scrollToSection('python')">PYTHON</button>
+        <button class="tab-btn" onclick="scrollToSection('html')">HTML</button>
     </div>
-
-    <section id="intro" class="visible">
-        <h1>Hi, I'm Elina.</h1>
-        <p>
-            I am a 17-year-old developer with <strong>6 years of coding experience</strong>. 
-            I started my journey when I was just 11, exploring the logic behind scripts and games. 
-            Over the years, I've mastered several languages, focusing on efficiency, clean code, and cool user experiences.
-        </p>
-        <div style="margin-top: 40px; color: var(--primary); font-weight: 800; font-size: 1.5rem;">
-            SCROLL DOWN TO EXPLORE MY WORK
-        </div>
-    </section>
 
     <section id="java">
-        <h1>Java Experience</h1>
-        <p>Java was one of my first major steps into object-oriented programming. Here are some showcase videos of my work.</p>
-        <div class="grid">
-            <div class="video-card" onclick="openVideo('42O-uxmgUng')">
-                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/42O-uxmgUng/maxresdefault.jpg')"></div>
-                <div class="card-label">Java Showcase #1</div>
-                <div class="play-btn">▶</div>
+        <h2 class="section-title">JAVA PROJECTS</h2>
+        <div class="video-grid">
+            <div class="square-card" onclick="playVid('42O-uxmgUng')">
+                <img src="https://img.youtube.com/vi/42O-uxmgUng/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay">▶</div>
+                <div class="card-info">SHOWCASE 01</div>
             </div>
-            <div class="video-card" onclick="openVideo('HXgp96SzYrk')">
-                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/HXgp96SzYrk/maxresdefault.jpg')"></div>
-                <div class="card-label">Java Showcase #2</div>
-                <div class="play-btn">▶</div>
+            <div class="square-card" onclick="playVid('HXgp96SzYrk')">
+                <img src="https://img.youtube.com/vi/HXgp96SzYrk/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay">▶</div>
+                <div class="card-info">SHOWCASE 02</div>
             </div>
         </div>
     </section>
 
     <section id="skript">
-        <h1>Skripting</h1>
-        <p>Highly specialized in Skript, creating complex systems and game mechanics with ease.</p>
-        <div class="grid">
-            <div class="video-card" onclick="openVideo('c2LI4pcD5UQ')">
-                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/c2LI4pcD5UQ/maxresdefault.jpg')"></div>
-                <div class="card-label">Skript System #1</div>
-                <div class="play-btn">▶</div>
+        <h2 class="section-title">SKRIPT WORK</h2>
+        <div class="video-grid">
+            <div class="square-card" onclick="playVid('c2LI4pcD5UQ')">
+                <img src="https://img.youtube.com/vi/c2LI4pcD5UQ/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay">▶</div>
+                <div class="card-info">SCRIPT REEL A</div>
             </div>
-            <div class="video-card" onclick="openVideo('suP98zsJ20k')">
-                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/suP98zsJ20k/maxresdefault.jpg')"></div>
-                <div class="card-label">Skript System #2</div>
-                <div class="play-btn">▶</div>
+            <div class="square-card" onclick="playVid('suP98zsJ20k')">
+                <img src="https://img.youtube.com/vi/suP98zsJ20k/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay">▶</div>
+                <div class="card-info">SCRIPT REEL B</div>
             </div>
         </div>
     </section>
 
     <section id="python">
-        <h1>Python</h1>
-        <div class="coming-soon">Coming Soon...</div>
+        <h2 class="section-title">PYTHON</h2>
+        <div class="coming-soon">COMING SOON...</div>
     </section>
 
     <section id="html">
-        <h1>HTML & Web</h1>
-        <div class="coming-soon">Coming Soon...</div>
+        <h2 class="section-title">HTML</h2>
+        <div class="coming-soon">COMING SOON...</div>
     </section>
 
+    <div id="modal">
+        <div class="modal-inner">
+            <span class="close-btn" onclick="closeVid()">&times;</span>
+            <div id="videoContainer" style="width:100%; height:100%;"></div>
+        </div>
+    </div>
+
     <script>
-        // --- Loading Handler ---
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
+        // --- BACKGROUND CANVAS ANIMATION ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 242, 255, 0.2)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- LOAD SCREEN ---
+        window.onload = () => {
             setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 1000);
-            }, 1500);
-        });
+                document.getElementById('loader').style.display = 'none';
+            }, 2000);
+        };
 
-        // --- Scroll Animations & Tab Highlighting ---
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-link');
+        // --- SCROLL LOGIC ---
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
 
-        window.addEventListener('scroll', () => {
+        // --- VIDEO PLAYER ---
+        function playVid(id) {
+            const modal = document.getElementById('modal');
+            const container = document.getElementById('videoContainer');
+            container.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${id}?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+            modal.style.display = 'flex';
+        }
+
+        function closeVid() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('videoContainer').innerHTML = '';
+        }
+
+        // Active Tab Highlighting
+        window.onscroll = () => {
             let current = "";
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 150) {
-                    current = section.getAttribute('id');
-                    section.classList.add('visible');
-                }
+            document.querySelectorAll('section').forEach(s => {
+                if (pageYOffset >= s.offsetTop - 150) current = s.getAttribute('id');
             });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                if (b.innerText.toLowerCase() === current) b.classList.add('active');
             });
-        });
-
-        // --- Video Modal Logic ---
-        function openVideo(id) {
-            const modal = document.getElementById('videoModal');
-            const container = document.getElementById('playerContainer');
-            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        }
-
-        function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const container = document.getElementById('playerContainer');
-            container.innerHTML = ''; // Stop video
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Re-enable scroll
-        }
-
-        // Close on Esc key
-        window.addEventListener('keydown', (e) => {
-            if (e.key === "Escape") closeVideo();
-        });
+        };
     </script>
 </body>
 </html>
