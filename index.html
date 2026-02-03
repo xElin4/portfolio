@@ -1,495 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Elina — Developer & Minecraft Plugins</title>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elina | 6 Years of Coding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         /* ========================================
-           CSS VARIABLES - BRANDING & COLORS
+           EXTENSIVE CSS STYLING & ANIMATIONS
            ========================================
         */
         :root {
-            --bg-dark: #050505;
-            --bg-card: #0f0f0f;
-            --accent-color: #9b59ff; /* purple */
-            --accent-glow: rgba(155, 89, 255, 0.25);
-            --text-main: #ffffff;
-            --text-dim: #a0a0a0;
-            --transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --bg: #0f0f13;
+            --card-bg: #1e1e26;
+            --text: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* ========================================
-           GLOBAL STYLES & RESET
-           ========================================
-        */
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-        html, body { height: 100%; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
-            line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
-        /* ========================================
-           LOADING SCREEN (PRELOADER)
-           ========================================
-        */
-        #preloader {
-            position: fixed; inset: 0;
-            background: #000;
+        /* --- Loading Screen --- */
+        #loader {
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+            background: var(--bg);
             z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
         }
 
-        .loader-content { text-align:center; }
-        .loader-bar { width: 200px; height: 2px; background: #222; margin-top: 20px; position: relative; overflow: hidden; }
-        .loader-progress {
-            position: absolute; height:100%; width:0%; background:var(--accent-color);
-            box-shadow: 0 0 15px var(--accent-color); animation: load 2.5s infinite;
-        }
-        .loader-text {
-            font-family: 'JetBrains Mono', monospace; color: var(--accent-color); letter-spacing:2px; font-size:0.9rem; text-transform: uppercase;
-        }
-        @keyframes load {
-            0% { width: 0%; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0%; left: 100%; }
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-top: 8px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite, glow 2s ease-in-out infinite;
         }
 
-        /* ========================================
-           HEADER
-           ========================================
-        */
-        header {
-            padding: 1.2rem 5%; display:flex; justify-content:space-between; align-items:center;
-            position: fixed; width:100%; top:0; z-index:1000;
-            background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--glass-border);
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 10px var(--primary); } 50% { box-shadow: 0 0 30px var(--primary); } }
+
+        /* --- Navigation Tabs --- */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 10px 30px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 20px;
         }
-        .logo { font-weight:900; font-size:1.25rem; letter-spacing:-1px; color:var(--text-main); text-decoration:none; }
-        .logo span { color: var(--accent-color); }
 
         .nav-link {
-            text-decoration: none; color: var(--text-dim); font-size: 0.85rem; font-weight:700;
-            text-transform: uppercase; transition: var(--transition); cursor: pointer; position: relative;
-            padding: 8px 12px; border-radius: 8px;
-        }
-        .nav-link:hover, .nav-link.active {
-            color: #000; background: var(--accent-color); box-shadow: 0 6px 18px var(--accent-glow);
-        }
-
-        /* ========================================
-           HERO
-           ========================================
-        */
-        .hero {
-            height: 80vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
-            padding: 0 10%; background: radial-gradient(circle at center, #111 0%, #050505 100%);
-            margin-top: 64px;
+            color: #ccc;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 20px;
         }
 
-        .hero h1 {
-            font-size: clamp(2rem, 6vw, 3rem); font-weight:900; margin-bottom: 1rem; line-height:1.05;
-            letter-spacing: -0.5px;
+        .nav-link.active, .nav-link:hover {
+            color: white;
+            background: var(--primary);
+            transform: scale(1.1);
         }
-        .hero h1 .accent { color: var(--accent-color); }
-        .hero p { font-size: 1.05rem; color: var(--text-dim); max-width:700px; margin-bottom:1.6rem; }
 
-        .btn-primary {
-            padding: 0.9rem 2rem; background: var(--accent-color); color:#000; text-decoration:none; font-weight:700;
-            border-radius:6px; transition: var(--transition); box-shadow: 0 10px 20px rgba(155,89,255,0.12);
+        /* --- Sections --- */
+        section {
+            min-height: 100vh;
+            padding: 120px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: 1s ease;
         }
-        .btn-primary:hover { transform: translateY(-4px); box-shadow: 0 15px 30px var(--accent-glow); }
 
-        /* ========================================
-           SECTIONS, TABS & GRID
-           ========================================
-        */
-        .container { padding: 80px 10%; min-height:60vh; display:none; opacity:0; transform: translateY(10px); }
-        .container.active { display:block; opacity:1; transform: none; transition: opacity 0.6s ease, transform 0.6s ease; }
-
-        .section-title {
-            font-size: 2.25rem; margin-bottom: 1rem; border-left: 5px solid var(--accent-color); padding-left: 18px; margin-top:10px;
-            opacity: 0; transform: translateX(-30px);
-            transition: transform 0.6s cubic-bezier(.2,.9,.2,1), opacity 0.6s;
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .section-title.in-view { opacity:1; transform: translateX(0); }
 
-        .tab-bar {
-            display:flex; gap:0.6rem; margin:1rem 0 2rem 0; flex-wrap:wrap;
-            opacity: 0; transform: translateY(-12px); transition: transform 0.5s ease, opacity 0.5s;
+        h1 { font-size: 4rem; margin-bottom: 20px; text-align: center; background: linear-gradient(to right, #6c5ce7, #00d2ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { max-width: 800px; text-align: center; line-height: 1.8; color: #aaa; font-size: 1.1rem; }
+
+        /* --- Video Grid --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 50px;
         }
-        .tab-bar.in-view { opacity:1; transform: translateY(0); }
 
-        .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:2rem; }
-
-        .project-card {
-            background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 12px; overflow:hidden;
-            position: relative; transition: transform 0.6s cubic-bezier(.2,.9,.2,1), box-shadow 0.4s;
-            opacity: 0; transform: translateY(30px) rotate(var(--initial-rotate, 0deg));
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: var(--transition);
+            aspect-ratio: 16/9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .project-card.in-view { opacity:1; transform: translateY(0) rotate(0); }
-        .project-card:hover { transform: scale(1.02); border-color: var(--accent-color); box-shadow: 0 20px 40px rgba(155,89,255,0.06); }
 
-        .card-img { width:100%; height:200px; background:#111; display:flex; align-items:center; justify-content:center; position:relative; cursor:pointer; }
-        .card-img img { width:100%; height:100%; object-fit:cover; opacity:0.9; transition: 0.25s; display:block; }
-        .play-overlay { position:absolute; font-size:3rem; color:var(--accent-color); pointer-events:none; text-shadow: 0 6px 20px rgba(155,89,255,0.2); }
+        .video-card:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 20px 40px rgba(108, 92, 231, 0.3);
+        }
 
-        .card-body { padding:1.25rem; }
-        .card-body h3 { margin-bottom:0.5rem; color:var(--accent-color); }
-        .card-body p { color:var(--text-dim); font-size:0.95rem; margin-bottom:1rem; }
-        .tag { display:inline-block; padding:4px 12px; background:var(--glass); border:1px solid var(--glass-border); border-radius:20px; font-size:0.7rem; text-transform:uppercase; margin-right:5px; }
+        .thumbnail {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: 0.5s;
+        }
 
-        /* ========================================
-           MODAL (VIDEO / MESSAGES)
-           ========================================
-        */
-        .modal { position:fixed; inset:0; background: rgba(0,0,0,0.95); z-index:2000; display:none; justify-content:center; align-items:center; padding:2rem; }
-        .modal.active { display:flex; }
+        .video-card:hover .thumbnail {
+            filter: brightness(0.4) scale(1.1);
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 50px;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .video-card:hover .play-btn { transform: translate(-50%, -50%) scale(1); }
+
+        .card-label {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: var(--primary);
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* --- Modal System --- */
+        .modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: 0.5s;
+        }
+
+        .modal.active { display: flex; opacity: 1; }
+
         .modal-content {
-            width:90%; max-width:1000px; aspect-ratio:16/9; background:#000; position:relative; border-radius:8px; overflow:hidden; box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            display:flex; align-items:center; justify-content:center;
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            aspect-ratio: 16/9;
+            background: black;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 50px var(--primary);
         }
-        .modal-content iframe { width:100%; height:100%; border:none; display:block; }
-        #modalMessage { width:100%; height:100%; display:none; padding:2rem; color:var(--text-main); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
-        #modalMessage h2 { color:var(--accent-color); margin-bottom:0.5rem; }
-        #modalMessage p { color:var(--text-dim); max-width:700px; }
-        .close-modal { position:absolute; top:-46px; right:0; color:#fff; font-size:1.1rem; cursor:pointer; font-family:Arial, sans-serif; transition:0.2s; padding:8px 12px; background:transparent; }
-        .close-modal:hover { color:var(--accent-color); }
 
-        /* ========================================
-           FOOTER
-           ========================================
-        */
-        footer { padding:5rem 10% 2rem; text-align:center; border-top:1px solid var(--glass-border); }
-        .footer-socials { display:flex; justify-content:center; gap:2rem; margin-bottom:2rem; }
-        .footer-socials a { color:var(--text-dim); text-decoration:none; transition:0.3s; }
-        .footer-socials a:hover { color:var(--accent-color); }
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-        @media (max-width:900px) {
-            .card-img { height:180px; }
-            .modal-content { width:100%; aspect-ratio:16/9; }
+        .close-modal:hover { color: var(--primary); transform: rotate(90deg); }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* --- Status Label (Coming Soon) --- */
+        .coming-soon {
+            padding: 100px;
+            border: 2px dashed rgba(255,255,255,0.1);
+            border-radius: 30px;
+            text-align: center;
+            font-size: 2rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            nav { width: 90%; overflow-x: auto; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <div id="preloader">
-        <div class="loader-content">
-            <div class="loader-text">Initializing Systems...</div>
-            <div class="loader-bar"><div class="loader-progress"></div></div>
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <nav>
+        <a href="#intro" class="nav-link active">Intro</a>
+        <a href="#java" class="nav-link">Java</a>
+        <a href="#skript" class="nav-link">Skript</a>
+        <a href="#python" class="nav-link">Python</a>
+        <a href="#html" class="nav-link">HTML</a>
+    </nav>
+
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideo()">&times;</span>
+            <div id="playerContainer"></div>
         </div>
     </div>
 
-    <header>
-        <a href="#" class="logo">ELINA<span>DEV</span></a>
-    </header>
-
-    <section class="hero" id="hero">
-        <h1><span class="accent">ELINA</span> — CRAFTING EXPERIENCES</h1>
-        <p>My name is Elina. I have been coding for 6+ years and I work with Java, Skript, HTML, and Python — below are examples of my work and projects.</p>
-        <a href="#java" class="btn-primary" id="viewWorkBtn">View My Work</a>
+    <section id="intro" class="visible">
+        <h1>Hi, I'm Elina.</h1>
+        <p>
+            I am a 17-year-old developer with <strong>6 years of coding experience</strong>. 
+            I started my journey when I was just 11, exploring the logic behind scripts and games. 
+            Over the years, I've mastered several languages, focusing on efficiency, clean code, and cool user experiences.
+        </p>
+        <div style="margin-top: 40px; color: var(--primary); font-weight: 800; font-size: 1.5rem;">
+            SCROLL DOWN TO EXPLORE MY WORK
+        </div>
     </section>
 
-    <!-- NOTE: no container is active by default so visiting or refreshing will show the hero at top -->
-    <div id="java" class="container">
-        <h2 class="section-title">Java Projects</h2>
-
-        <div class="tab-bar">
-            <div class="nav-link" onclick="showTab('java', this)">Java</div>
-            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
-            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
-            <div class="nav-link" onclick="showTab('python', this)">Python</div>
-        </div>
-
+    <section id="java">
+        <h1>Java Experience</h1>
+        <p>Java was one of my first major steps into object-oriented programming. Here are some showcase videos of my work.</p>
         <div class="grid">
-            <div class="project-card" style="--initial-rotate:-1.8deg">
-                <div class="card-img" onclick="openVideo('42O-uxmgUng')"> <span class="play-overlay">▶</span>
-                    <img src="https://img.youtube.com/vi/42O-uxmgUng/hqdefault.jpg" alt="AdvancedEnchants Pro">
-                </div>
-                <div class="card-body">
-                    <h3>AdvancedEnchants Pro</h3>
-                    <p>A high-performance NMS-based enchantment system with custom JSON configuration and packet-based visual effects.</p>
-                    <span class="tag">Spigot API</span><span class="tag">NMS</span><span class="tag">Maven</span>
-                </div>
+            <div class="video-card" onclick="openVideo('42O-uxmgUng')">
+                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/42O-uxmgUng/maxresdefault.jpg')"></div>
+                <div class="card-label">Java Showcase #1</div>
+                <div class="play-btn">▶</div>
             </div>
-
-            <div class="project-card" style="--initial-rotate:1.6deg">
-                <div class="card-img" onclick="openVideo('HXgp96SzYrk')"> <span class="play-overlay">▶</span>
-                    <img src="https://img.youtube.com/vi/HXgp96SzYrk/hqdefault.jpg" alt="PacketFX Toolkit">
-                </div>
-                <div class="card-body">
-                    <h3>PacketFX Toolkit</h3>
-                    <p>Advanced packet manipulation tools and visual utilities for real-time effect rendering and optimization strategies.</p>
-                    <span class="tag">Bukkit</span><span class="tag">Packets</span><span class="tag">Performance</span>
-                </div>
+            <div class="video-card" onclick="openVideo('HXgp96SzYrk')">
+                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/HXgp96SzYrk/maxresdefault.jpg')"></div>
+                <div class="card-label">Java Showcase #2</div>
+                <div class="play-btn">▶</div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="skript" class="container">
-        <h2 class="section-title">Skript Architecture</h2>
-
-        <div class="tab-bar">
-            <div class="nav-link" onclick="showTab('java', this)">Java</div>
-            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
-            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
-            <div class="nav-link" onclick="showTab('python', this)">Python</div>
-        </div>
-
+    <section id="skript">
+        <h1>Skripting</h1>
+        <p>Highly specialized in Skript, creating complex systems and game mechanics with ease.</p>
         <div class="grid">
-            <div class="project-card" style="--initial-rotate:-1.6deg">
-                <div class="card-img" onclick="openVideo('c2LI4pcD5UQ')"> <span class="play-overlay">▶</span>
-                    <img src="https://img.youtube.com/vi/c2LI4pcD5UQ/hqdefault.jpg" alt="Modular Core System">
-                </div>
-                <div class="card-body">
-                    <h3>Modular Core System</h3>
-                    <p>Complete server management suite written in Skript, featuring optimized variable handling and YAML data storage.</p>
-                    <span class="tag">Skript</span><span class="tag">skBee</span><span class="tag">YAML</span>
-                </div>
+            <div class="video-card" onclick="openVideo('c2LI4pcD5UQ')">
+                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/c2LI4pcD5UQ/maxresdefault.jpg')"></div>
+                <div class="card-label">Skript System #1</div>
+                <div class="play-btn">▶</div>
             </div>
-
-            <div class="project-card" style="--initial-rotate:1.4deg">
-                <div class="card-img" onclick="openVideo('suP98zsJ20k')"> <span class="play-overlay">▶</span>
-                    <img src="https://img.youtube.com/vi/suP98zsJ20k/hqdefault.jpg" alt="Event Framework">
-                </div>
-                <div class="card-body">
-                    <h3>Event Framework</h3>
-                    <p>Reusable event-handling patterns and optimized performance logic for large multiplayer servers.</p>
-                    <span class="tag">Skript</span><span class="tag">Performance</span><span class="tag">Scaling</span>
-                </div>
+            <div class="video-card" onclick="openVideo('suP98zsJ20k')">
+                <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/suP98zsJ20k/maxresdefault.jpg')"></div>
+                <div class="card-label">Skript System #2</div>
+                <div class="play-btn">▶</div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="html" class="container">
-        <h2 class="section-title">Web Interfaces</h2>
+    <section id="python">
+        <h1>Python</h1>
+        <div class="coming-soon">Coming Soon...</div>
+    </section>
 
-        <div class="tab-bar">
-            <div class="nav-link" onclick="showTab('java', this)">Java</div>
-            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
-            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
-            <div class="nav-link" onclick="showTab('python', this)">Python</div>
-        </div>
-
-        <div class="grid">
-            <div class="project-card" style="--initial-rotate:-1.4deg">
-                <div class="card-img" onclick="openComingSoon()"> <span class="play-overlay">🕒</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Store+Front+Design" alt="Store Front Design">
-                </div>
-                <div class="card-body">
-                    <h3>Server Store Template</h3>
-                    <p>Coming soon — responsive store template with dynamic cart logic and polished CSS animations.</p>
-                    <span class="tag">HTML5</span><span class="tag">CSS3</span><span class="tag">JavaScript</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="python" class="container">
-        <h2 class="section-title">Python Automation</h2>
-
-        <div class="tab-bar">
-            <div class="nav-link" onclick="showTab('java', this)">Java</div>
-            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
-            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
-            <div class="nav-link" onclick="showTab('python', this)">Python</div>
-        </div>
-
-        <div class="grid">
-            <div class="project-card" style="--initial-rotate:1.8deg">
-                <div class="card-img" onclick="openComingSoon()"> <span class="play-overlay">🕒</span>
-                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Discord+Bot+Python" alt="Discord Bot Python">
-                </div>
-                <div class="card-body">
-                    <h3>Bot-Integrated Analytics</h3>
-                    <p>Coming soon — a discord bot that scrapes server logs and provides real-time analytics and visualizations.</p>
-                    <span class="tag">Discord.py</span><span class="tag">Pandas</span><span class="tag">API</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="videoModal" class="modal" aria-hidden="true">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeVideo()">&times; Close</span>
-            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
-            <div id="modalMessage">
-                <h2>Coming Soon</h2>
-                <p>This feature or demo is coming soon — stay tuned! If you'd like a preview, contact me on GitHub or Discord.</p>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-socials">
-            <a href="#">GitHub</a><a href="#">Discord</a><a href="#">YouTube</a><a href="#">LinkedIn</a>
-        </div>
-        <p>&copy; 2026 Minecraft Portfolio. All Rights Reserved.</p>
-    </footer>
+    <section id="html">
+        <h1>HTML & Web</h1>
+        <div class="coming-soon">Coming Soon...</div>
+    </section>
 
     <script>
-        // PRELOAD & SCROLL TO HERO ON LOAD
+        // --- Loading Handler ---
         window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
+            const loader = document.getElementById('loader');
             setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => { preloader.style.display = 'none'; }, 700);
-                // ensure we are at the top / hero after preloader
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 900);
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 1000);
+            }, 1500);
         });
 
-        // SIMPLE TAB SWITCHING
-        function showTab(tabId, element) {
-            // hide all containers
-            document.querySelectorAll('.container').forEach(c => {
-                c.classList.remove('active');
-                // clear in-view for title/tabbar so animation can retrigger when reopened
-                const t = c.querySelector('.section-title'); if (t) t.classList.remove('in-view');
-                const bar = c.querySelector('.tab-bar'); if (bar) bar.classList.remove('in-view');
-                // remove active highlight inside each tab-bar
-                const links = c.querySelectorAll('.tab-bar .nav-link');
-                links.forEach(l => l.classList.remove('active'));
+        // --- Scroll Animations & Tab Highlighting ---
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                    section.classList.add('visible');
+                }
             });
 
-            // show requested container
-            const target = document.getElementById(tabId);
-            if (!target) return;
-            target.classList.add('active');
-
-            // mark selected tab in that container
-            if (element && element.classList && element.classList.contains('nav-link')) {
-                // clicked a local tab directly
-                element.classList.add('active');
-            } else {
-                // fallback: select the local tab corresponding to the target container name
-                const inside = target.querySelector(`.tab-bar .nav-link`);
-                if (inside) inside.classList.add('active');
-            }
-
-            // animate section title & tabbar into view
-            const secTitle = target.querySelector('.section-title');
-            const tabbar = target.querySelector('.tab-bar');
-            if (secTitle) setTimeout(() => secTitle.classList.add('in-view'), 60);
-            if (tabbar) setTimeout(() => tabbar.classList.add('in-view'), 130);
-
-            // smooth scroll to the container (so it feels like moving down from hero)
-            const offset = Math.max(0, (target.getBoundingClientRect().top + window.scrollY) - 60);
-            window.scrollTo({ top: offset, behavior: 'smooth' });
-        }
-
-        // LINK FROM HERO BUTTON: open Java tab and highlight its tab
-        document.getElementById('viewWorkBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            // find the Java container's local nav link that says "Java"
-            const javaFirstNav = document.querySelector('#java .tab-bar .nav-link');
-            showTab('java', javaFirstNav);
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
         });
 
-        // VIDEO & COMING-SOON MODAL
-        const modal = document.getElementById('videoModal');
-        const player = document.getElementById('videoPlayer');
-        const modalMessage = document.getElementById('modalMessage');
-
-        function openVideo(videoId) {
-            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
-            player.src = embedUrl;
-            player.style.display = 'block';
-            modalMessage.style.display = 'none';
+        // --- Video Modal Logic ---
+        function openVideo(id) {
+            const modal = document.getElementById('videoModal');
+            const container = document.getElementById('playerContainer');
+            container.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
             modal.classList.add('active');
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function openComingSoon() {
-            player.src = '';
-            player.style.display = 'none';
-            modalMessage.style.display = 'flex';
-            modal.classList.add('active');
-            modal.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
         }
 
         function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const container = document.getElementById('playerContainer');
+            container.innerHTML = ''; // Stop video
             modal.classList.remove('active');
-            player.src = '';
-            player.style.display = 'none';
-            modalMessage.style.display = 'none';
-            modal.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
+            document.body.style.overflow = 'auto'; // Re-enable scroll
         }
 
-        // close modal on background click
-        window.addEventListener('click', (event) => {
-            if (event.target === modal) closeVideo();
-        });
-
-        // SCROLL ANIMATION: IntersectionObserver with staggered reveal
-        const observerOptions = { threshold: 0.12 };
-        const cardObserver = new IntersectionObserver((entries) => {
-            // we want to stagger reveals per container
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                const card = entry.target;
-                // find its index among visible cards in same grid
-                const parentGrid = card.closest('.grid');
-                let index = 0;
-                if (parentGrid) {
-                    const cards = Array.from(parentGrid.querySelectorAll('.project-card'));
-                    index = cards.indexOf(card);
-                }
-                // staggered delay based on index
-                card.style.transitionDelay = `${Math.min(10, index) * 80}ms`;
-                card.classList.add('in-view');
-                cardObserver.unobserve(card);
-            });
-        }, observerOptions);
-
-        // Observe all cards
-        document.querySelectorAll('.project-card').forEach(card => {
-            cardObserver.observe(card);
-        });
-
-        // Also animate section titles & tabbars when their container becomes active or scrolled into view
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const sec = entry.target.querySelector('.section-title');
-                    const bar = entry.target.querySelector('.tab-bar');
-                    if (sec) sec.classList.add('in-view');
-                    if (bar) bar.classList.add('in-view');
-                }
-            });
-        }, { threshold: 0.15 });
-
-        document.querySelectorAll('.container').forEach(c => sectionObserver.observe(c));
-
-        // Optional: keyboard escape to close modal
+        // Close on Esc key
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) closeVideo();
-        });
-
-        // Ensure clicking a tab in any container will switch to that container and set the active look (works for all tab bars)
-        document.querySelectorAll('.tab-bar .nav-link').forEach(el => {
-            el.addEventListener('click', (evt) => {
-                // the onclick inline also calls showTab; this ensures clicking sets visual state reliably
-                // determine the target container id by reading the text inside (lowercase)
-                const text = el.textContent.trim().toLowerCase();
-                if (['java','skript','html','python'].includes(text)) {
-                    showTab(text, el);
-                }
-            });
-        });
-
-        // When visiting/refreshing, keep user at top (hero). If you'd like the last-opened tab to persist, we can store it in localStorage.
-        window.addEventListener('beforeunload', () => {
-            // nothing stored for now; leaving this hook available
+            if (e.key === "Escape") closeVideo();
         });
     </script>
 </body>
