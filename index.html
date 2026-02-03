@@ -3,328 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elina | Portfolio</title>
+    <title>Elina | Lead Developer Portfolio</title>
     <style>
         :root {
             --primary: #2ecc71;
             --secondary: #9b59b6;
-            --bg: #0a0a0a;
-            --card-bg: #151515;
-            --text: #ffffff;
-            --text-dim: #b3b3b3;
+            --accent: #00ff88;
+            --bg-dark: #050505;
+            --card-bg: rgba(20, 20, 20, 0.8);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --glow: rgba(46, 204, 113, 0.4);
+            --font-main: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            cursor: none; /* Custom cursor implementation */
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: var(--font-main);
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        #loader {
+        /* --- ADVANCED BACKGROUND --- */
+        .grid-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease-out, visibility 0.8s;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            mask-image: radial-gradient(ellipse at center, black, transparent 80%);
         }
 
-        .loader-content {
-            text-align: center;
-        }
-
-        .spinner {
-            width: 80px;
-            height: 80px;
-            border: 5px solid rgba(46, 204, 113, 0.1);
-            border-left-color: var(--primary);
-            border-right-color: var(--secondary);
+        /* --- CUSTOM CURSOR --- */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        header {
-            height: 60vh;
+        /* --- LOADER --- */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
-            padding: 20px;
-            text-align: center;
+            transition: opacity 1s ease;
         }
 
-        .profile-title {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            position: absolute;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            animation: loadProgress 2s ease forwards;
+        }
+
+        @keyframes loadProgress {
+            to { width: 100%; }
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            background: rgba(46, 204, 113, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #fff, #555);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 800;
         }
 
-        .profile-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            max-width: 600px;
-        }
-
-        .container {
+        /* --- TABS --- */
+        .tabs-container {
             max-width: 1200px;
-            margin: -50px auto 50px;
-            padding: 0 20px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
-        .tabs-nav {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-            background: var(--card-bg);
-            padding: 10px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            position: sticky;
-            top: 20px;
-            z-index: 100;
-        }
-
-        .tab-btn {
-            padding: 12px 30px;
-            border: none;
-            background: transparent;
-            color: var(--text-dim);
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .tab-btn:hover {
-            color: var(--text);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .tab-content {
-            display: none;
-            animation: slideUp 0.6s ease-out forwards;
-        }
-
-        .tab-content.active {
+        .tabs-header {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 60px;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
+        .tab-trigger {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 20px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-trigger::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .tab-trigger.active {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .tab-trigger.active::before { width: 100%; }
+
+        /* --- VIDEO GRID --- */
+        .project-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .project-grid.active { display: grid; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .video-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .video-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-        }
-
-        .video-wrapper {
+        /* --- VIDEO BOX (THUMBNAIL) --- */
+        .video-box {
             position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
+            aspect-ratio: 16/9;
+            background: #111;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: var(--transition);
         }
 
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .video-box:hover {
+            transform: scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px var(--glow);
+        }
+
+        .thumb-img {
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: 0.5s ease;
+        }
+
+        .video-box:hover .thumb-img { opacity: 1; transform: scale(1.1); }
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .play-btn {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        /* --- MODAL (WATCH BOX) --- */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .modal.open { display: flex; }
+
+        .modal-content {
+            width: 100%;
+            max-width: 1000px;
+            aspect-ratio: 16/9;
+            position: relative;
+            background: #000;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
             border: none;
         }
 
-        .video-info {
-            padding: 20px;
-        }
-
-        .video-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .placeholder-content {
+        /* --- COMING SOON --- */
+        .coming-soon {
             grid-column: 1 / -1;
+            padding: 100px;
             text-align: center;
-            padding: 100px 20px;
-            background: var(--card-bg);
+            background: var(--glass);
+            border: 1px dashed var(--secondary);
             border-radius: 20px;
-            border: 2px dashed rgba(155, 89, 182, 0.3);
-        }
-
-        footer {
-            text-align: center;
-            padding: 50px 20px;
-            color: var(--text-dim);
-            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         @media (max-width: 768px) {
-            .tabs-nav {
-                flex-wrap: wrap;
-            }
-            .tab-btn {
-                flex: 1 1 40%;
-                padding: 10px;
-            }
-            .profile-title {
-                font-size: 2.5rem;
-            }
+            .tabs-header { grid-template-columns: 1fr 1fr; }
+            .project-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
+    <div id="cursor"></div>
+    <div class="grid-bg"></div>
+
     <div id="loader">
-        <div class="loader-content">
-            <div class="spinner"></div>
-            <p style="margin-top: 20px; color: var(--primary); letter-spacing: 2px;">LOADING PORTFOLIO</p>
-        </div>
+        <h2 style="letter-spacing: 5px; color: var(--primary);">ELINA_OS</h2>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
     </div>
 
-    <header>
-        <h1 class="profile-title">ELINA</h1>
-        <p class="profile-subtitle">17-year-old Developer specializing in Minecraft Infrastructure, Discord Automation, and Modern Web Experiences.</p>
-    </header>
+    <section class="hero">
+        <div class="hero-badge">Fullstack Developer // Age 17</div>
+        <h1 class="hero-title">Portfolio</h1>
+        <p style="color: var(--primary)">Specializing in Java, Skript, and Python Architecture</p>
+    </section>
 
-    <div class="container">
-        <nav class="tabs-nav">
-            <button class="tab-btn active" onclick="openTab(event, 'java')">Java</button>
-            <button class="tab-btn" onclick="openTab(event, 'skript')">Skript</button>
-            <button class="tab-btn" onclick="openTab(event, 'python')">Python</button>
-            <button class="tab-btn" onclick="openTab(event, 'web')">Web Dev</button>
-        </nav>
+    <div class="tabs-container">
+        <div class="tabs-header">
+            <button class="tab-trigger active" onclick="switchTab('java', this)">Java</button>
+            <button class="tab-trigger" onclick="switchTab('skript', this)">Skript</button>
+            <button class="tab-trigger" onclick="switchTab('python', this)">Python</button>
+            <button class="tab-trigger" onclick="switchTab('web', this)">Web Dev</button>
+        </div>
 
-        <div id="java" class="tab-content active">
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/42O-uxmgUng" allowfullscreen></iframe>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">Java Project - Part 1</h3>
-                    <p>Core systems implementation and backend architecture for Minecraft plugins.</p>
-                </div>
+        <div id="java" class="project-grid active">
+            <div class="video-box" onclick="openVideo('42O-uxmgUng')">
+                <img src="https://img.youtube.com/vi/42O-uxmgUng/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay"><div class="play-btn">▶</div></div>
             </div>
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/HXgp96SzYrk" allowfullscreen></iframe>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">Java Project - Part 2</h3>
-                    <p>Advanced event handling and performance optimization techniques.</p>
-                </div>
+            <div class="video-box" onclick="openVideo('HXgp96SzYrk')">
+                <img src="https://img.youtube.com/vi/HXgp96SzYrk/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay"><div class="play-btn">▶</div></div>
             </div>
         </div>
 
-        <div id="skript" class="tab-content">
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/c2LI4pcD5UQ" allowfullscreen></iframe>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">Custom Skript Logic</h3>
-                    <p>Efficient scripting for dynamic server-side gameplay mechanics.</p>
-                </div>
+        <div id="skript" class="project-grid">
+            <div class="video-box" onclick="openVideo('c2LI4pcD5UQ')">
+                <img src="https://img.youtube.com/vi/c2LI4pcD5UQ/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay"><div class="play-btn">▶</div></div>
             </div>
-            <div class="video-card">
-                <div class="video-wrapper">
-                    <iframe src="https://www.youtube.com/embed/suP98zsJ20k" allowfullscreen></iframe>
-                </div>
-                <div class="video-info">
-                    <h3 class="video-title">Skript Showcase</h3>
-                    <p>Integration of variables and complex data structures in Skript.</p>
-                </div>
+            <div class="video-box" onclick="openVideo('suP98zsJ20k')">
+                <img src="https://img.youtube.com/vi/suP98zsJ20k/maxresdefault.jpg" class="thumb-img">
+                <div class="play-overlay"><div class="play-btn">▶</div></div>
             </div>
         </div>
 
-        <div id="python" class="tab-content">
-            <div class="placeholder-content">
-                <h2 style="color: var(--secondary); margin-bottom: 15px;">Python Development</h2>
-                <p>Discord bots and automation tools coming soon to this section.</p>
+        <div id="python" class="project-grid">
+            <div class="coming-soon">
+                <h3 style="color: var(--secondary)">System.Python.init()</h3>
+                <p>Advanced Discord Bots and Data Processing coming soon.</p>
             </div>
         </div>
 
-        <div id="web" class="tab-content">
-            <div class="placeholder-content">
-                <h2 style="color: var(--primary); margin-bottom: 15px;">Frontend & Design</h2>
-                <p>Modern, responsive web portfolios and dashboards under construction.</p>
+        <div id="web" class="project-grid">
+            <div class="coming-soon">
+                <h3 style="color: var(--primary)">Frontend_Module.load()</h3>
+                <p>Next.js and Tailwind CSS interfaces in development.</p>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2024 Elina. All rights reserved.</p>
-    </footer>
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeVideo()">&times; CLOSE</button>
+            <iframe id="videoPlayer" width="100%" height="100%" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.visibility = 'hidden';
-                }, 800);
-            }, 1500);
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
 
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-                tabcontent[i].classList.remove("active");
-            }
-            tablinks = document.getElementsByClassName("tab-btn");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            const activeTab = document.getElementById(tabName);
-            activeTab.style.display = "grid";
-            setTimeout(() => {
-                activeTab.classList.add("active");
-            }, 10);
-            evt.currentTarget.className += " active";
+        // Tab Switching Logic
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.project-grid').forEach(g => g.classList.remove('active'));
+            document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
         }
+
+        // Video Modal Logic
+        const modal = document.getElementById('videoModal');
+        const player = document.getElementById('videoPlayer');
+
+        function openVideo(id) {
+            player.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideo() {
+            modal.classList.remove('open');
+            player.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'Escape') closeVideo();
+        });
+
+        // Loader removal
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').remove(), 1000);
+            }, 2000);
+        });
     </script>
 </body>
 </html>
