@@ -14,8 +14,8 @@
         :root {
             --bg-dark: #050505;
             --bg-card: #0f0f0f;
-            --accent-color: #00ff88; /* Minecraft-ish Green */
-            --accent-glow: rgba(0, 255, 136, 0.3);
+            --accent-color: #9b59ff; /* More purple */
+            --accent-glow: rgba(155, 89, 255, 0.25);
             --text-main: #ffffff;
             --text-dim: #a0a0a0;
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -102,7 +102,7 @@
            ========================================
         */
         header {
-            padding: 2rem 5%;
+            padding: 1.2rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -117,7 +117,7 @@
 
         .logo {
             font-weight: 900;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             letter-spacing: -1px;
             color: var(--text-main);
             text-decoration: none;
@@ -127,34 +127,36 @@
             color: var(--accent-color);
         }
 
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
+        /* top nav removed - tabs moved into each container */
 
         .nav-link {
             text-decoration: none;
             color: var(--text-dim);
-            font-size: 0.9rem;
-            font-weight: 600;
+            font-size: 0.85rem;
+            font-weight: 700;
             text-transform: uppercase;
             transition: var(--transition);
             cursor: pointer;
             position: relative;
+            padding: 8px 12px;
+            border-radius: 8px;
         }
 
         .nav-link:hover, .nav-link.active {
-            color: var(--accent-color);
+            color: #000;
+            background: var(--accent-color);
+            box-shadow: 0 6px 18px var(--accent-glow);
         }
 
         .nav-link.active::after {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 100%;
+            bottom: -8px;
+            left: 10px;
+            width: calc(100% - 20px);
             height: 2px;
             background: var(--accent-color);
+            border-radius: 2px;
         }
 
         /* ========================================
@@ -162,7 +164,7 @@
            ========================================
         */
         .hero {
-            height: 100vh;
+            height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -170,35 +172,36 @@
             text-align: center;
             padding: 0 10%;
             background: radial-gradient(circle at center, #111 0%, #050505 100%);
+            margin-top: 64px; /* account for fixed header */
         }
 
         .hero h1 {
-            font-size: clamp(3rem, 10vw, 6rem);
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
             font-weight: 900;
             margin-bottom: 1rem;
-            line-height: 1;
+            line-height: 1.05;
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.05rem;
             color: var(--text-dim);
-            max-width: 600px;
+            max-width: 700px;
             margin-bottom: 2rem;
         }
 
         .btn-primary {
-            padding: 1rem 2.5rem;
+            padding: 0.9rem 2rem;
             background: var(--accent-color);
             color: #000;
             text-decoration: none;
             font-weight: 700;
-            border-radius: 5px;
+            border-radius: 6px;
             transition: var(--transition);
-            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+            box-shadow: 0 10px 20px rgba(155, 89, 255, 0.12);
         }
 
         .btn-primary:hover {
-            transform: translateY(-5px);
+            transform: translateY(-4px);
             box-shadow: 0 15px 30px var(--accent-glow);
         }
 
@@ -207,8 +210,8 @@
            ========================================
         */
         .container {
-            padding: 100px 10%;
-            min-height: 100vh;
+            padding: 80px 10%;
+            min-height: 60vh;
             display: none; /* Controlled by JS */
         }
 
@@ -223,10 +226,19 @@
         }
 
         .section-title {
-            font-size: 3rem;
-            margin-bottom: 3rem;
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
             border-left: 5px solid var(--accent-color);
-            padding-left: 20px;
+            padding-left: 18px;
+            margin-top: 10px;
+        }
+
+        /* Local tab bar (moved from top into each container) */
+        .tab-bar {
+            display: flex;
+            gap: 0.6rem;
+            margin: 1rem 0 2rem 0;
+            flex-wrap: wrap;
         }
 
         .grid {
@@ -247,6 +259,7 @@
         .project-card:hover {
             transform: scale(1.02);
             border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(155,89,255,0.06);
         }
 
         .card-img {
@@ -269,7 +282,7 @@
         }
 
         .project-card:hover .card-img img {
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
         .play-overlay {
@@ -277,6 +290,7 @@
             font-size: 3rem;
             color: var(--accent-color);
             pointer-events: none;
+            text-shadow: 0 6px 20px rgba(155,89,255,0.2);
         }
 
         .card-body {
@@ -290,7 +304,7 @@
 
         .card-body p {
             color: var(--text-dim);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-bottom: 1rem;
         }
 
@@ -306,7 +320,7 @@
         }
 
         /* ========================================
-           MODAL SYSTEM (VIDEO PLAYER)
+           MODAL SYSTEM (VIDEO PLAYER / MESSAGES)
            ========================================
         */
         .modal {
@@ -322,6 +336,7 @@
             align-items: center;
             opacity: 0;
             transition: opacity 0.4s ease;
+            padding: 2rem;
         }
 
         .modal.active {
@@ -330,29 +345,61 @@
         }
 
         .modal-content {
-            width: 80%;
+            width: 90%;
             max-width: 1000px;
             aspect-ratio: 16/9;
             background: #000;
             position: relative;
             box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
         }
 
         .modal-content iframe {
             width: 100%;
             height: 100%;
             border: none;
+            display: block;
+        }
+
+        #modalMessage {
+            width: 100%;
+            height: 100%;
+            display: none;
+            color: var(--text-main);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #modalMessage h2 {
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        #modalMessage p {
+            color: var(--text-dim);
+            max-width: 700px;
         }
 
         .close-modal {
             position: absolute;
-            top: -50px;
+            top: -46px;
             right: 0;
             color: #fff;
-            font-size: 2rem;
+            font-size: 1.1rem;
             cursor: pointer;
             font-family: Arial, sans-serif;
-            transition: 0.3s;
+            transition: 0.2s;
+            padding: 8px 12px;
+            background: transparent;
         }
 
         .close-modal:hover {
@@ -386,6 +433,10 @@
             color: var(--accent-color);
         }
 
+        @media (max-width: 900px) {
+            .card-img { height: 180px; }
+            .modal-content { width: 100%; aspect-ratio: 16/9; }
+        }
     </style>
 </head>
 <body>
@@ -400,27 +451,31 @@
     </div>
 
     <header>
-        <a href="#" class="logo">DEV<span>PORTFOLIO</span></a>
-        <nav>
-            <div class="nav-link active" onclick="showTab('java', this)">Java</div>
-            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
-            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
-            <div class="nav-link" onclick="showTab('python', this)">Python</div>
-        </nav>
+        <a href="#" class="logo">ELINA<span>DEV</span></a>
+        <!-- top nav intentionally removed — tabs are now inside each section -->
     </header>
 
     <section class="hero">
         <h1>CRAFTING <span>CODE</span></h1>
-        <p>Professional Full-Stack Developer & Minecraft Plugin Specialist. Transforming complex logic into seamless experiences.</p>
-        <a href="#java" class="btn-primary" onclick="showTab('java', document.querySelector('.nav-link'))">View My Work</a>
+        <p>My name is Elina. I have been coding for 6+ years and I work with Java, Skript, HTML, and Python — below are examples of my work and projects.</p>
+        <a href="#java" class="btn-primary" onclick="showTab('java', document.querySelector('#java .tab-bar .nav-link'))">View My Work</a>
     </section>
 
     <div id="java" class="container active">
         <h2 class="section-title">Java Projects</h2>
+
+        <!-- Local tab bar for quick navigation placed inside the content area -->
+        <div class="tab-bar">
+            <div class="nav-link active" onclick="showTab('java', this)">Java</div>
+            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
+            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
+            <div class="nav-link" onclick="showTab('python', this)">Python</div>
+        </div>
+
         <div class="grid">
             <div class="project-card">
-                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')"> <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Custom+Enchants+Plugin" alt="Java Project">
+                <div class="card-img" onclick="openVideo('42O-uxmgUng')"> <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=AdvancedEnchants+Pro" alt="AdvancedEnchants Pro">
                 </div>
                 <div class="card-body">
                     <h3>AdvancedEnchants Pro</h3>
@@ -430,23 +485,58 @@
                     <span class="tag">Maven</span>
                 </div>
             </div>
+
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('HXgp96SzYrk')"> <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Networking+Tool" alt="Java Project 2">
+                </div>
+                <div class="card-body">
+                    <h3>PacketFX Toolkit</h3>
+                    <p>Advanced packet manipulation tools and visual utilities for real-time effect rendering and optimization strategies.</p>
+                    <span class="tag">Bukkit</span>
+                    <span class="tag">Packets</span>
+                    <span class="tag">Performance</span>
+                </div>
             </div>
+        </div>
     </div>
 
     <div id="skript" class="container">
         <h2 class="section-title">Skript Architecture</h2>
+
+        <div class="tab-bar">
+            <div class="nav-link" onclick="showTab('java', this)">Java</div>
+            <div class="nav-link active" onclick="showTab('skript', this)">Skript</div>
+            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
+            <div class="nav-link" onclick="showTab('python', this)">Python</div>
+        </div>
+
         <div class="grid">
             <div class="project-card">
-                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
+                <div class="card-img" onclick="openVideo('c2LI4pcD5UQ')">
                     <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Core+System+Skript" alt="Skript Project">
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Modular+Core+System" alt="Skript Project 1">
                 </div>
                 <div class="card-body">
                     <h3>Modular Core System</h3>
                     <p>Complete server management suite written in Skript, featuring optimized variable handling and YAML data storage.</p>
                     <span class="tag">Skript</span>
                     <span class="tag">skBee</span>
-                    <span class="tag">sk-NBee</span>
+                    <span class="tag">YAML</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('suP98zsJ20k')">
+                    <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Event+Framework+Skript" alt="Skript Project 2">
+                </div>
+                <div class="card-body">
+                    <h3>Event Framework</h3>
+                    <p>Reusable event-handling patterns and optimized performance logic for large multiplayer servers.</p>
+                    <span class="tag">Skript</span>
+                    <span class="tag">Performance</span>
+                    <span class="tag">Scaling</span>
                 </div>
             </div>
         </div>
@@ -454,15 +544,23 @@
 
     <div id="html" class="container">
         <h2 class="section-title">Web Interfaces</h2>
+
+        <div class="tab-bar">
+            <div class="nav-link" onclick="showTab('java', this)">Java</div>
+            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
+            <div class="nav-link active" onclick="showTab('html', this)">HTML</div>
+            <div class="nav-link" onclick="showTab('python', this)">Python</div>
+        </div>
+
         <div class="grid">
             <div class="project-card">
-                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
-                    <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Store+Front+Design" alt="HTML Project">
+                <div class="card-img" onclick="openComingSoon()">
+                    <span class="play-overlay">🕒</span>
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Store+Front+Design" alt="HTML Project">
                 </div>
                 <div class="card-body">
                     <h3>Server Store Template</h3>
-                    <p>Fully responsive, CSS-animated store template for Minecraft servers with dynamic shopping cart logic.</p>
+                    <p>Coming soon — responsive store template with dynamic cart logic and polished CSS animations.</p>
                     <span class="tag">HTML5</span>
                     <span class="tag">CSS3</span>
                     <span class="tag">JavaScript</span>
@@ -473,15 +571,23 @@
 
     <div id="python" class="container">
         <h2 class="section-title">Python Automation</h2>
+
+        <div class="tab-bar">
+            <div class="nav-link" onclick="showTab('java', this)">Java</div>
+            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
+            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
+            <div class="nav-link active" onclick="showTab('python', this)">Python</div>
+        </div>
+
         <div class="grid">
             <div class="project-card">
-                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
-                    <span class="play-overlay">▶</span>
-                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Discord+Bot+Python" alt="Python Project">
+                <div class="card-img" onclick="openComingSoon()">
+                    <span class="play-overlay">🕒</span>
+                    <img src="https://via.placeholder.com/800x450/111/9b59ff?text=Discord+Bot+Python" alt="Python Project">
                 </div>
                 <div class="card-body">
                     <h3>Bot-Integrated Analytics</h3>
-                    <p>A Discord bot that scrapes server logs and provides real-time player statistics and economy tracking via Matplotlib.</p>
+                    <p>Coming soon — a discord bot that scrapes server logs and provides real-time analytics and visualizations.</p>
                     <span class="tag">Discord.py</span>
                     <span class="tag">Pandas</span>
                     <span class="tag">API</span>
@@ -494,6 +600,10 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeVideo()">&times; Close</span>
             <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+            <div id="modalMessage">
+                <h2>Coming Soon</h2>
+                <p>This feature or demo is coming soon — stay tuned! If you'd like a preview, contact me directly on GitHub or Discord.</p>
+            </div>
         </div>
     </div>
 
@@ -516,7 +626,7 @@
                 setTimeout(() => {
                     preloader.style.display = 'none';
                 }, 800);
-            }, 2000); // 2-second showcase of the loader
+            }, 1200); // slightly shorter showcase
         });
 
         // 2. TAB SWITCHING SYSTEM
@@ -525,36 +635,60 @@
             const containers = document.querySelectorAll('.container');
             containers.forEach(container => container.classList.remove('active'));
 
-            // Remove active class from all nav links
-            const navLinks = document.querySelectorAll('.nav-link');
+            // Remove active class from all nav links (all local tab-bars)
+            const navLinks = document.querySelectorAll('.tab-bar .nav-link');
             navLinks.forEach(link => link.classList.remove('active'));
 
             // Show selected container and highlight nav
-            document.getElementById(tabId).classList.add('active');
-            element.classList.add('active');
+            const target = document.getElementById(tabId);
+            if (!target) return;
+            target.classList.add('active');
+
+            // If the clicked element is one of the local nav links, activate it.
+            // Otherwise, try to find the corresponding local nav link inside the activated container.
+            if (element && element.classList && element.classList.contains('nav-link')) {
+                element.classList.add('active');
+            } else {
+                const inside = target.querySelector('.tab-bar .nav-link');
+                if (inside) inside.classList.add('active');
+            }
 
             // Scroll slightly to content if on mobile
             if(window.innerWidth < 768) {
-                window.scrollTo(0, window.innerHeight - 100);
+                window.scrollTo({ top: window.innerHeight - 100, behavior: 'smooth' });
             }
         }
 
-        // 3. VIDEO MODAL LOGIC
+        // 3. VIDEO & MESSAGE MODAL LOGIC
         const modal = document.getElementById('videoModal');
         const player = document.getElementById('videoPlayer');
+        const modalMessage = document.getElementById('modalMessage');
 
         function openVideo(videoId) {
             // Construct the YouTube Embed URL
             const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             player.src = embedUrl;
+            player.style.display = 'block';
+            modalMessage.style.display = 'none';
             modal.classList.add('active');
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function openComingSoon() {
+            player.src = '';
+            player.style.display = 'none';
+            modalMessage.style.display = 'flex';
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeVideo() {
             modal.classList.remove('active');
             player.src = ''; // Stop video
             document.body.style.overflow = 'auto'; // Re-enable scroll
+            // hide both for cleanliness
+            player.style.display = 'none';
+            modalMessage.style.display = 'none';
         }
 
         // Close modal on background click
