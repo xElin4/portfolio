@@ -3,419 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELINA // Terminal Portfolio</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    
+    <title>Elina | Portfolio</title>
     <style>
-        /* PURPLE-ISH ARCHITECTURE
-           Everything coded from scratch for Elina
-        */
         :root {
-            --neon-purple: #bc13fe;
-            --dark-purple: #1a0b2e;
-            --bg-black: #05010a;
-            --surface: rgba(25, 10, 45, 0.7);
-            --text-primary: #f5f5f5;
-            --text-secondary: #a855f7;
-            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --primary: #2ecc71;
+            --secondary: #9b59b6;
+            --bg: #0a0a0a;
+            --card-bg: #151515;
+            --text: #ffffff;
+            --text-dim: #b3b3b3;
         }
 
-        /* --- ADVANCED PRELOADER --- */
-        #terminal-loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-black);
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 10%;
-            font-family: 'Space Mono', monospace;
-            color: var(--neon-purple);
-            overflow: hidden;
-        }
-
-        .code-line {
-            opacity: 0;
-            transform: translateY(10px);
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-
-        /* --- BASE STYLES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Custom cursor implementation below */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg-black);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--bg-black); }
-        ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 10px; }
-
-        /* --- BACKGROUND CANVAS --- */
-        #canvas-bg {
+        #loader {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1;
-            filter: blur(2px);
-        }
-
-        /* --- CUSTOM CURSOR --- */
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--neon-purple);
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            box-shadow: 0 0 15px var(--neon-purple);
-        }
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--neon-purple);
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99998;
-            transition: transform 0.15s ease-out;
-        }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding-left: 10%;
-            position: relative;
-        }
-
-        .glitch-wrapper {
-            position: relative;
-        }
-
-        .hero h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(3rem, 12vw, 8rem);
-            font-weight: 700;
-            text-transform: uppercase;
-            line-height: 0.8;
-            color: white;
-            position: relative;
-        }
-
-        .hero h1 span {
-            display: block;
-            color: transparent;
-            -webkit-text-stroke: 1px var(--neon-purple);
-        }
-
-        .hero-subtext {
-            font-family: 'Space Mono', monospace;
-            color: var(--text-secondary);
-            margin-top: 20px;
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-        }
-
-        /* --- 4 VIDEO SPOTS (DYNAMIC MENU) --- */
-        .projects-section {
-            padding: 150px 10%;
-        }
-
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
-        }
-
-        .project-card {
-            background: var(--surface);
-            border: 1px solid rgba(188, 19, 254, 0.2);
-            padding: 30px;
-            border-radius: 4px;
-            position: relative;
-            transition: var(--transition);
-            overflow: hidden;
-        }
-
-        .project-card:hover {
-            border-color: var(--neon-purple);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 60px rgba(188, 19, 254, 0.1);
-        }
-
-        .video-placeholder {
             width: 100%;
-            height: 250px;
-            background: #000;
-            margin-bottom: 25px;
+            height: 100%;
+            background: var(--bg);
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
-            border-radius: 2px;
+            z-index: 9999;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
         }
 
-        .play-trigger {
-            width: 70px;
-            height: 70px;
-            border: 1px solid var(--neon-purple);
+        .loader-content {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(46, 204, 113, 0.1);
+            border-left-color: var(--primary);
+            border-right-color: var(--secondary);
             border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        header {
+            height: 60vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--neon-purple);
-            font-size: 1.5rem;
-            transition: var(--transition);
-        }
-
-        .project-card:hover .play-trigger {
-            background: var(--neon-purple);
-            color: white;
-            box-shadow: 0 0 30px var(--neon-purple);
-        }
-
-        /* --- FULLSCREEN VIDEO MENU --- */
-        .video-menu {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 1, 10, 0.98);
-            z-index: 20000;
-            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 50px;
+            background: linear-gradient(135deg, rgba(46, 204, 113, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .profile-title {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .profile-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: -50px auto 50px;
+            padding: 0 20px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
         }
 
         .video-wrapper {
-            width: 100%;
-            max-width: 1200px;
-            aspect-ratio: 16/9;
-            background: #000;
-            box-shadow: 0 0 100px rgba(188, 19, 254, 0.3);
-            border: 1px solid var(--neon-purple);
             position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
         }
 
-        .video-wrapper video {
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            border: none;
         }
 
-        .close-video {
-            position: absolute;
-            top: -60px;
-            right: 0;
-            color: white;
-            font-family: 'Space Mono';
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
+        .video-info {
+            padding: 20px;
         }
 
-        /* --- STATS / SKILLS --- */
-        .stats-bar {
-            display: flex;
-            gap: 50px;
-            margin-top: 100px;
-            border-top: 1px solid var(--surface);
-            padding-top: 40px;
+        .video-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
         }
 
-        .stat-item h4 { color: var(--neon-purple); font-family: 'Space Mono'; }
+        .placeholder-content {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 100px 20px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 2px dashed rgba(155, 89, 182, 0.3);
+        }
 
-        /* --- ANIMATIONS --- */
-        @keyframes fadeInLine {
-            to { opacity: 1; transform: translateY(0); }
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-dim);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .tabs-nav {
+                flex-wrap: wrap;
+            }
+            .tab-btn {
+                flex: 1 1 40%;
+                padding: 10px;
+            }
+            .profile-title {
+                font-size: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="terminal-loader">
-        </div>
-
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
-
-    <canvas id="canvas-bg"></canvas>
-
-    <nav style="position: fixed; top: 0; width: 100%; padding: 40px 10%; display: flex; justify-content: space-between; z-index: 1000;">
-        <div style="font-family: 'Syncopate'; font-weight: 700; color: white;">ELINA<span style="color: var(--neon-purple);">.SYSTEM</span></div>
-        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: var(--text-secondary);">STATUS: ONLINE // 2024</div>
-    </nav>
-
-    <section class="hero">
-        <div class="glitch-wrapper">
-            <h1>ELINA<span>ELINA</span></h1>
-        </div>
-        <p class="hero-subtext">JAVA_SCRIPT // HTML // PYTHON</p>
-        
-        <div class="stats-bar">
-            <div class="stat-item"><h4>LOCATION</h4><p>GLOBAL / REMOTE</p></div>
-            <div class="stat-item"><h4>SPECIALTY</h4><p>FULL STACK ARCHITECTURE</p></div>
-            <div class="stat-item"><h4>AVAILABILITY</h4><p>FOR_HIRE</p></div>
-        </div>
-    </section>
-
-    <section class="projects-section">
-        <h2 style="font-family: 'Syncopate'; margin-bottom: 60px; font-size: 2rem;">SELECTED_WORKS</h2>
-        
-        <div class="project-grid">
-            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/mov_bbb.mp4')">
-                <div class="video-placeholder">
-                    <div class="play-trigger"><i class="fas fa-play"></i></div>
-                </div>
-                <h3>PROJECT_ALPHA</h3>
-                <p style="color: var(--text-secondary); font-size: 0.8rem;">JS / NEON ENGINE</p>
-            </div>
-
-            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/movie.mp4')">
-                <div class="video-placeholder">
-                    <div class="play-trigger"><i class="fas fa-play"></i></div>
-                </div>
-                <h3>PROJECT_BETA</h3>
-                <p style="color: var(--text-secondary); font-size: 0.8rem;">PYTHON / AUTOMATION</p>
-            </div>
-
-            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/mov_bbb.mp4')">
-                <div class="video-placeholder">
-                    <div class="play-trigger"><i class="fas fa-play"></i></div>
-                </div>
-                <h3>PROJECT_GAMMA</h3>
-                <p style="color: var(--text-secondary); font-size: 0.8rem;">HTML / CSS MASTER</p>
-            </div>
-
-            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/movie.mp4')">
-                <div class="video-placeholder">
-                    <div class="play-trigger"><i class="fas fa-play"></i></div>
-                </div>
-                <h3>PROJECT_DELTA</h3>
-                <p style="color: var(--text-secondary); font-size: 0.8rem;">FULL STACK / API</p>
-            </div>
-        </div>
-    </section>
-
-    <div class="video-menu" id="videoMenu">
-        <div class="video-wrapper">
-            <div class="close-video" onclick="closeVideo()">[ CLOSE_SYSTEM ]</div>
-            <video id="mainVideo" controls>
-                <source src="" type="video/mp4">
-            </video>
+    <div id="loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p style="margin-top: 20px; color: var(--primary); letter-spacing: 2px;">LOADING PORTFOLIO</p>
         </div>
     </div>
 
+    <header>
+        <h1 class="profile-title">ELINA</h1>
+        <p class="profile-subtitle">17-year-old Developer specializing in Minecraft Infrastructure, Discord Automation, and Modern Web Experiences.</p>
+    </header>
+
+    <div class="container">
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'java')">Java</button>
+            <button class="tab-btn" onclick="openTab(event, 'skript')">Skript</button>
+            <button class="tab-btn" onclick="openTab(event, 'python')">Python</button>
+            <button class="tab-btn" onclick="openTab(event, 'web')">Web Dev</button>
+        </nav>
+
+        <div id="java" class="tab-content active">
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/42O-uxmgUng" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Java Project - Part 1</h3>
+                    <p>Core systems implementation and backend architecture for Minecraft plugins.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/HXgp96SzYrk" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Java Project - Part 2</h3>
+                    <p>Advanced event handling and performance optimization techniques.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="skript" class="tab-content">
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/c2LI4pcD5UQ" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Custom Skript Logic</h3>
+                    <p>Efficient scripting for dynamic server-side gameplay mechanics.</p>
+                </div>
+            </div>
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/suP98zsJ20k" allowfullscreen></iframe>
+                </div>
+                <div class="video-info">
+                    <h3 class="video-title">Skript Showcase</h3>
+                    <p>Integration of variables and complex data structures in Skript.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="python" class="tab-content">
+            <div class="placeholder-content">
+                <h2 style="color: var(--secondary); margin-bottom: 15px;">Python Development</h2>
+                <p>Discord bots and automation tools coming soon to this section.</p>
+            </div>
+        </div>
+
+        <div id="web" class="tab-content">
+            <div class="placeholder-content">
+                <h2 style="color: var(--primary); margin-bottom: 15px;">Frontend & Design</h2>
+                <p>Modern, responsive web portfolios and dashboards under construction.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Elina. All rights reserved.</p>
+    </footer>
+
     <script>
-        // 1. TERMINAL PRELOADER LOGIC
-        const loader = document.getElementById('terminal-loader');
-        const commands = [
-            "STARTING ELINA_BOOT_SEQUENCE...",
-            "LOADING MODULES: [JS, HTML, PYTHON]",
-            "CONNECTING TO NEON_SERVER...",
-            "ESTABLISHING SECURE PROTOCOLS...",
-            "DECRYPTING INTERFACE...",
-            "SYSTEM READY."
-        ];
-
-        commands.forEach((cmd, i) => {
-            const line = document.createElement('div');
-            line.className = 'code-line';
-            line.innerHTML = `> ${cmd}`;
-            line.style.animation = `fadeInLine 0.3s forwards ${i * 0.4}s`;
-            loader.appendChild(line);
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.visibility = 'hidden';
+                }, 800);
+            }, 1500);
         });
 
-        setTimeout(() => {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.style.display = 'none', 1000);
-        }, 3500);
-
-        // 2. CANVAS PARTICLES
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particles = [];
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
             }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
-            draw() {
-                ctx.fillStyle = 'rgba(188, 19, 254, 0.3)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            for (let i = 0; i < 100; i++) particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        init(); animate();
-
-        // 3. CURSOR LOGIC
-        const dot = document.querySelector('.cursor-dot');
-        const outline = document.querySelector('.cursor-outline');
-        window.addEventListener('mousemove', (e) => {
-            dot.style.left = e.clientX + 'px';
-            dot.style.top = e.clientY + 'px';
-            outline.style.left = e.clientX - 20 + 'px';
-            outline.style.top = e.clientY - 20 + 'px';
-        });
-
-        // 4. VIDEO MENU LOGIC
-        const videoMenu = document.getElementById('videoMenu');
-        const mainVideo = document.getElementById('mainVideo');
-
-        function openVideo(src) {
-            mainVideo.src = src;
-            videoMenu.style.display = 'flex';
-            mainVideo.play();
-        }
-
-        function closeVideo() {
-            videoMenu.style.display = 'none';
-            mainVideo.pause();
-            mainVideo.src = "";
+            const activeTab = document.getElementById(tabName);
+            activeTab.style.display = "grid";
+            setTimeout(() => {
+                activeTab.classList.add("active");
+            }, 10);
+            evt.currentTarget.className += " active";
         }
     </script>
 </body>
