@@ -3,173 +3,587 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elina | Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Architect & Developer | Minecraft Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
     <style>
+        /* ========================================
+           CSS VARIABLES - BRANDING & COLORS
+           ========================================
+        */
         :root {
-            --accent: #a855f7;
-            --accent-glow: rgba(168, 85, 247, 0.4);
-            --bg-dark: #09090b;
+            --bg-dark: #050505;
+            --bg-card: #0f0f0f;
+            --accent-color: #00ff88; /* Minecraft-ish Green */
+            --accent-glow: rgba(0, 255, 136, 0.3);
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        /* ========================================
+           GLOBAL STYLES & RESET
+           ========================================
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
             background-color: var(--bg-dark);
-            color: #f4f4f5;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Animated Mesh Background */
-        .mesh-bg {
+        /* ========================================
+           LOADING SCREEN (PRELOADER)
+           ========================================
+        */
+        #preloader {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: 
-                radial-gradient(circle at 0% 0%, rgba(88, 28, 135, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
         }
 
-        /* Glowing Cyber Grid */
-        .grid-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(168, 85, 247, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(168, 85, 247, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-            mask-image: radial-gradient(ellipse at center, black, transparent 80%);
+        .loader-content {
+            text-align: center;
         }
 
-        /* Glass Card Effect */
-        .glass-card {
-            background: rgba(24, 24, 27, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-            border-radius: 24px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .glass-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
-            transform: translateY(-8px) scale(1.01);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Video Container Styling */
-        .video-wrapper {
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            margin-top: 20px;
             position: relative;
-            padding-bottom: 56.25%;
-            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #09090b; }
-        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a855f7; }
-
-        .floating {
-            animation: floating 3s ease-in-out infinite;
+        .loader-progress {
+            position: absolute;
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            box-shadow: 0 0 15px var(--accent-color);
+            animation: load 2.5s infinite;
         }
 
-        @keyframes floating {
-            0% { transform: translatey(0px); }
-            50% { transform: translatey(-10px); }
-            100% { transform: translatey(0px); }
+        .loader-text {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
         }
+
+        @keyframes load {
+            0% { width: 0%; left: 0; }
+            50% { width: 100%; left: 0; }
+            100% { width: 0%; left: 100%; }
+        }
+
+        /* ========================================
+           NAVIGATION & HEADER
+           ========================================
+        */
+        header {
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-color);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        /* ========================================
+           HERO SECTION
+           ========================================
+        */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at center, #111 0%, #050505 100%);
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            padding: 1rem 2.5rem;
+            background: var(--accent-color);
+            color: #000;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 5px;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--accent-glow);
+        }
+
+        /* ========================================
+           PORTFOLIO GRID & CARDS
+           ========================================
+        */
+        .container {
+            padding: 100px 10%;
+            min-height: 100vh;
+            display: none; /* Controlled by JS */
+        }
+
+        .container.active {
+            display: block;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: scale(1.02);
+            border-color: var(--accent-color);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .project-card:hover .card-img img {
+            opacity: 0.9;
+        }
+
+        .play-overlay {
+            position: absolute;
+            font-size: 3rem;
+            color: var(--accent-color);
+            pointer-events: none;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-body h3 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .card-body p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            margin-right: 5px;
+        }
+
+        /* ========================================
+           MODAL SYSTEM (VIDEO PLAYER)
+           ========================================
+        */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            width: 80%;
+            max-width: 1000px;
+            aspect-ratio: 16/9;
+            background: #000;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+        }
+
+        /* ========================================
+           FOOTER
+           ========================================
+        */
+        footer {
+            padding: 5rem 10% 2rem;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-socials {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-socials a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-socials a:hover {
+            color: var(--accent-color);
+        }
+
     </style>
 </head>
-<body class="p-6 md:p-12">
-    <div class="mesh-bg"></div>
-    <div class="grid-overlay"></div>
+<body>
 
-    <main class="max-w-6xl mx-auto">
-        <header class="flex flex-col md:flex-row justify-between items-center mb-20 gap-8">
-            <div class="text-center md:text-left">
-                <h1 class="text-7xl font-bold tracking-tighter text-gradient mb-2">ELINA</h1>
-                <p class="text-purple-400 font-medium tracking-widest uppercase text-sm">Fullstack Developer // Specialist</p>
+    <div id="preloader">
+        <div class="loader-content">
+            <div class="loader-text">Initializing Systems...</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
             </div>
-            
-            <div class="flex gap-4">
-                <div class="glass-card px-8 py-4 text-center">
-                    <span class="block text-2xl font-bold">17</span>
-                    <span class="text-xs text-zinc-500 uppercase tracking-widest">Age</span>
-                </div>
-                <div class="glass-card px-8 py-4 text-center border-purple-500/50">
-                    <span class="block text-2xl font-bold text-gradient">6+</span>
-                    <span class="text-xs text-zinc-500 uppercase tracking-widest">Years Exp</span>
-                </div>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <div class="h-px flex-1 bg-gradient-to-r from-transparent to-purple-500/50"></div>
-                    <h2 class="text-3xl font-bold tracking-tight">JAVA</h2>
-                </div>
-                <div class="glass-card p-6 space-y-4">
-                    <div class="video-wrapper">
-                        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/42O-uxmgUng" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="video-wrapper">
-                        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/HXgp96SzYrk" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </section>
-
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <div class="h-px flex-1 bg-gradient-to-r from-transparent to-purple-500/50"></div>
-                    <h2 class="text-3xl font-bold tracking-tight">SKRIPT</h2>
-                </div>
-                <div class="glass-card p-6 space-y-4">
-                    <div class="video-wrapper">
-                        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/c2LI4pcD5UQ" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="video-wrapper">
-                        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/suP98zsJ20k" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </section>
-
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <div class="h-px flex-1 bg-gradient-to-r from-transparent to-purple-500/50"></div>
-                    <h2 class="text-3xl font-bold tracking-tight">PYTHON</h2>
-                </div>
-                <div class="glass-card p-12 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🐍</div>
-                    <p class="text-zinc-400 font-medium italic">Coming soon...</p>
-                </div>
-            </section>
-
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <div class="h-px flex-1 bg-gradient-to-r from-transparent to-purple-500/50"></div>
-                    <h2 class="text-3xl font-bold tracking-tight">HTML</h2>
-                </div>
-                <div class="glass-card p-12 text-center group">
-                    <div class="text-5xl mb-4 group-hover:scale-110 transition-transform">🌐</div>
-                    <p class="text-zinc-400 font-medium italic">Coming soon...</p>
-                </div>
-            </section>
-
         </div>
+    </div>
 
-        <footer class="mt-24 text-center text-zinc-600 text-sm">
-            <p>&copy; 2026 Elina. Built with precision.</p>
-        </footer>
-    </main>
+    <header>
+        <a href="#" class="logo">DEV<span>PORTFOLIO</span></a>
+        <nav>
+            <div class="nav-link active" onclick="showTab('java', this)">Java</div>
+            <div class="nav-link" onclick="showTab('skript', this)">Skript</div>
+            <div class="nav-link" onclick="showTab('html', this)">HTML</div>
+            <div class="nav-link" onclick="showTab('python', this)">Python</div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>CRAFTING <span>CODE</span></h1>
+        <p>Professional Full-Stack Developer & Minecraft Plugin Specialist. Transforming complex logic into seamless experiences.</p>
+        <a href="#java" class="btn-primary" onclick="showTab('java', document.querySelector('.nav-link'))">View My Work</a>
+    </section>
+
+    <div id="java" class="container active">
+        <h2 class="section-title">Java Projects</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')"> <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Custom+Enchants+Plugin" alt="Java Project">
+                </div>
+                <div class="card-body">
+                    <h3>AdvancedEnchants Pro</h3>
+                    <p>A high-performance NMS-based enchantment system with custom JSON configuration and packet-based visual effects.</p>
+                    <span class="tag">Spigot API</span>
+                    <span class="tag">NMS</span>
+                    <span class="tag">Maven</span>
+                </div>
+            </div>
+            </div>
+    </div>
+
+    <div id="skript" class="container">
+        <h2 class="section-title">Skript Architecture</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
+                    <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Core+System+Skript" alt="Skript Project">
+                </div>
+                <div class="card-body">
+                    <h3>Modular Core System</h3>
+                    <p>Complete server management suite written in Skript, featuring optimized variable handling and YAML data storage.</p>
+                    <span class="tag">Skript</span>
+                    <span class="tag">skBee</span>
+                    <span class="tag">sk-NBee</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="html" class="container">
+        <h2 class="section-title">Web Interfaces</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
+                    <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Store+Front+Design" alt="HTML Project">
+                </div>
+                <div class="card-body">
+                    <h3>Server Store Template</h3>
+                    <p>Fully responsive, CSS-animated store template for Minecraft servers with dynamic shopping cart logic.</p>
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="python" class="container">
+        <h2 class="section-title">Python Automation</h2>
+        <div class="grid">
+            <div class="project-card">
+                <div class="card-img" onclick="openVideo('dQw4w9WgXcQ')">
+                    <span class="play-overlay">▶</span>
+                    <img src="https://via.placeholder.com/800x450/111/00ff88?text=Discord+Bot+Python" alt="Python Project">
+                </div>
+                <div class="card-body">
+                    <h3>Bot-Integrated Analytics</h3>
+                    <p>A Discord bot that scrapes server logs and provides real-time player statistics and economy tracking via Matplotlib.</p>
+                    <span class="tag">Discord.py</span>
+                    <span class="tag">Pandas</span>
+                    <span class="tag">API</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeVideo()">&times; Close</span>
+            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="#">GitHub</a>
+            <a href="#">Discord</a>
+            <a href="#">YouTube</a>
+            <a href="#">LinkedIn</a>
+        </div>
+        <p>&copy; 2026 Minecraft Portfolio. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 1. LOADING SCREEN DISMISSAL
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 800);
+            }, 2000); // 2-second showcase of the loader
+        });
+
+        // 2. TAB SWITCHING SYSTEM
+        function showTab(tabId, element) {
+            // Hide all containers
+            const containers = document.querySelectorAll('.container');
+            containers.forEach(container => container.classList.remove('active'));
+
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Show selected container and highlight nav
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+
+            // Scroll slightly to content if on mobile
+            if(window.innerWidth < 768) {
+                window.scrollTo(0, window.innerHeight - 100);
+            }
+        }
+
+        // 3. VIDEO MODAL LOGIC
+        const modal = document.getElementById('videoModal');
+        const player = document.getElementById('videoPlayer');
+
+        function openVideo(videoId) {
+            // Construct the YouTube Embed URL
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            player.src = embedUrl;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeVideo() {
+            modal.classList.remove('active');
+            player.src = ''; // Stop video
+            document.body.style.overflow = 'auto'; // Re-enable scroll
+        }
+
+        // Close modal on background click
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeVideo();
+            }
+        }
+
+        // 4. ANIMATION ON SCROLL (SIMPLE)
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
