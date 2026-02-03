@@ -3,96 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elina | Lead Developer Portfolio</title>
+    <title>ELINA // Terminal Portfolio</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Mono&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* PURPLE-ISH ARCHITECTURE
+           Everything coded from scratch for Elina
+        */
         :root {
-            --primary: #2ecc71;
-            --secondary: #9b59b6;
-            --accent: #00ff88;
-            --bg-dark: #050505;
-            --card-bg: rgba(20, 20, 20, 0.8);
-            --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
-            --glow: rgba(46, 204, 113, 0.4);
-            --font-main: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --neon-purple: #bc13fe;
+            --dark-purple: #1a0b2e;
+            --bg-black: #05010a;
+            --surface: rgba(25, 10, 45, 0.7);
+            --text-primary: #f5f5f5;
+            --text-secondary: #a855f7;
+            --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
+        /* --- ADVANCED PRELOADER --- */
+        #terminal-loader {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-black);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 10%;
+            font-family: 'Space Mono', monospace;
+            color: var(--neon-purple);
+            overflow: hidden;
+        }
+
+        .code-line {
+            opacity: 0;
+            transform: translateY(10px);
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* --- BASE STYLES --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Custom cursor implementation */
+            cursor: none; /* Custom cursor implementation below */
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: white;
-            font-family: var(--font-main);
+            background-color: var(--bg-black);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             line-height: 1.6;
         }
 
-        /* --- ADVANCED BACKGROUND --- */
-        .grid-bg {
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-black); }
+        ::-webkit-scrollbar-thumb { background: var(--neon-purple); border-radius: 10px; }
+
+        /* --- BACKGROUND CANVAS --- */
+        #canvas-bg {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 50px 50px;
             z-index: -1;
-            mask-image: radial-gradient(ellipse at center, black, transparent 80%);
+            filter: blur(2px);
         }
 
         /* --- CUSTOM CURSOR --- */
-        #cursor {
-            width: 20px;
-            height: 20px;
-            background: var(--primary);
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-purple);
+            position: fixed;
             border-radius: 50%;
-            position: fixed;
             pointer-events: none;
-            z-index: 10000;
-            mix-blend-mode: difference;
-            transition: transform 0.1s ease;
+            z-index: 99999;
+            box-shadow: 0 0 15px var(--neon-purple);
         }
-
-        /* --- LOADER --- */
-        #loader {
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--neon-purple);
             position: fixed;
-            inset: 0;
-            background: var(--bg-dark);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1s ease;
-        }
-
-        .loader-bar {
-            width: 200px;
-            height: 2px;
-            background: #222;
-            margin-top: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .loader-progress {
-            position: absolute;
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            animation: loadProgress 2s ease forwards;
-        }
-
-        @keyframes loadProgress {
-            to { width: 100%; }
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99998;
+            transition: transform 0.15s ease-out;
         }
 
         /* --- HERO SECTION --- */
@@ -101,303 +102,321 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            padding-left: 10%;
             position: relative;
         }
 
-        .hero-badge {
-            background: rgba(46, 204, 113, 0.1);
-            padding: 8px 20px;
-            border-radius: 50px;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
+        .glitch-wrapper {
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .hero-title {
-            font-size: clamp(3rem, 10vw, 8rem);
-            font-weight: 900;
-            text-transform: uppercase;
-            background: linear-gradient(to right, #fff, #555);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* --- TABS --- */
-        .tabs-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .tabs-header {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-bottom: 60px;
-        }
-
-        .tab-trigger {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            padding: 20px;
+            line-height: 0.8;
             color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: var(--transition);
             position: relative;
-            overflow: hidden;
         }
 
-        .tab-trigger::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 3px;
-            background: var(--primary);
-            transition: width 0.3s ease;
+        .hero h1 span {
+            display: block;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--neon-purple);
         }
 
-        .tab-trigger.active {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--primary);
-            transform: translateY(-5px);
+        .hero-subtext {
+            font-family: 'Space Mono', monospace;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
         }
 
-        .tab-trigger.active::before { width: 100%; }
+        /* --- 4 VIDEO SPOTS (DYNAMIC MENU) --- */
+        .projects-section {
+            padding: 150px 10%;
+        }
 
-        /* --- VIDEO GRID --- */
         .project-grid {
-            display: none;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 30px;
-            animation: fadeIn 0.8s ease;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
         }
 
-        .project-grid.active { display: grid; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- VIDEO BOX (THUMBNAIL) --- */
-        .video-box {
+        .project-card {
+            background: var(--surface);
+            border: 1px solid rgba(188, 19, 254, 0.2);
+            padding: 30px;
+            border-radius: 4px;
             position: relative;
-            aspect-ratio: 16/9;
-            background: #111;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid var(--border);
             transition: var(--transition);
+            overflow: hidden;
         }
 
-        .video-box:hover {
-            transform: scale(1.02);
-            border-color: var(--primary);
-            box-shadow: 0 0 30px var(--glow);
+        .project-card:hover {
+            border-color: var(--neon-purple);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(188, 19, 254, 0.1);
         }
 
-        .thumb-img {
+        .video-placeholder {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.6;
-            transition: 0.5s ease;
-        }
-
-        .video-box:hover .thumb-img { opacity: 1; transform: scale(1.1); }
-
-        .play-overlay {
-            position: absolute;
-            inset: 0;
+            height: 250px;
+            background: #000;
+            margin-bottom: 25px;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(0,0,0,0.3);
+            position: relative;
+            border-radius: 2px;
         }
 
-        .play-btn {
-            width: 60px;
-            height: 60px;
-            background: var(--primary);
+        .play-trigger {
+            width: 70px;
+            height: 70px;
+            border: 1px solid var(--neon-purple);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: 0.3s;
+            color: var(--neon-purple);
+            font-size: 1.5rem;
+            transition: var(--transition);
         }
 
-        /* --- MODAL (WATCH BOX) --- */
-        .modal {
+        .project-card:hover .play-trigger {
+            background: var(--neon-purple);
+            color: white;
+            box-shadow: 0 0 30px var(--neon-purple);
+        }
+
+        /* --- FULLSCREEN VIDEO MENU --- */
+        .video-menu {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
+            background: rgba(5, 1, 10, 0.98);
+            z-index: 20000;
             display: none;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            padding: 50px;
         }
 
-        .modal.open { display: flex; }
-
-        .modal-content {
+        .video-wrapper {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1200px;
             aspect-ratio: 16/9;
-            position: relative;
             background: #000;
-            border: 1px solid var(--primary);
-            box-shadow: 0 0 50px rgba(0,0,0,1);
+            box-shadow: 0 0 100px rgba(188, 19, 254, 0.3);
+            border: 1px solid var(--neon-purple);
+            position: relative;
         }
 
-        .close-modal {
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .close-video {
             position: absolute;
-            top: -50px;
+            top: -60px;
             right: 0;
             color: white;
-            font-size: 2rem;
+            font-family: 'Space Mono';
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             cursor: pointer;
-            background: none;
-            border: none;
         }
 
-        /* --- COMING SOON --- */
-        .coming-soon {
-            grid-column: 1 / -1;
-            padding: 100px;
-            text-align: center;
-            background: var(--glass);
-            border: 1px dashed var(--secondary);
-            border-radius: 20px;
+        /* --- STATS / SKILLS --- */
+        .stats-bar {
+            display: flex;
+            gap: 50px;
+            margin-top: 100px;
+            border-top: 1px solid var(--surface);
+            padding-top: 40px;
         }
 
-        @media (max-width: 768px) {
-            .tabs-header { grid-template-columns: 1fr 1fr; }
-            .project-grid { grid-template-columns: 1fr; }
+        .stat-item h4 { color: var(--neon-purple); font-family: 'Space Mono'; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInLine {
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
-    <div class="grid-bg"></div>
+    <div id="terminal-loader">
+        </div>
 
-    <div id="loader">
-        <h2 style="letter-spacing: 5px; color: var(--primary);">ELINA_OS</h2>
-        <div class="loader-bar"><div class="loader-progress"></div></div>
-    </div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <canvas id="canvas-bg"></canvas>
+
+    <nav style="position: fixed; top: 0; width: 100%; padding: 40px 10%; display: flex; justify-content: space-between; z-index: 1000;">
+        <div style="font-family: 'Syncopate'; font-weight: 700; color: white;">ELINA<span style="color: var(--neon-purple);">.SYSTEM</span></div>
+        <div style="font-family: 'Space Mono'; font-size: 0.7rem; color: var(--text-secondary);">STATUS: ONLINE // 2024</div>
+    </nav>
 
     <section class="hero">
-        <div class="hero-badge">Fullstack Developer // Age 17</div>
-        <h1 class="hero-title">Portfolio</h1>
-        <p style="color: var(--primary)">Specializing in Java, Skript, and Python Architecture</p>
+        <div class="glitch-wrapper">
+            <h1>ELINA<span>ELINA</span></h1>
+        </div>
+        <p class="hero-subtext">JAVA_SCRIPT // HTML // PYTHON</p>
+        
+        <div class="stats-bar">
+            <div class="stat-item"><h4>LOCATION</h4><p>GLOBAL / REMOTE</p></div>
+            <div class="stat-item"><h4>SPECIALTY</h4><p>FULL STACK ARCHITECTURE</p></div>
+            <div class="stat-item"><h4>AVAILABILITY</h4><p>FOR_HIRE</p></div>
+        </div>
     </section>
 
-    <div class="tabs-container">
-        <div class="tabs-header">
-            <button class="tab-trigger active" onclick="switchTab('java', this)">Java</button>
-            <button class="tab-trigger" onclick="switchTab('skript', this)">Skript</button>
-            <button class="tab-trigger" onclick="switchTab('python', this)">Python</button>
-            <button class="tab-trigger" onclick="switchTab('web', this)">Web Dev</button>
-        </div>
+    <section class="projects-section">
+        <h2 style="font-family: 'Syncopate'; margin-bottom: 60px; font-size: 2rem;">SELECTED_WORKS</h2>
+        
+        <div class="project-grid">
+            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/mov_bbb.mp4')">
+                <div class="video-placeholder">
+                    <div class="play-trigger"><i class="fas fa-play"></i></div>
+                </div>
+                <h3>PROJECT_ALPHA</h3>
+                <p style="color: var(--text-secondary); font-size: 0.8rem;">JS / NEON ENGINE</p>
+            </div>
 
-        <div id="java" class="project-grid active">
-            <div class="video-box" onclick="openVideo('42O-uxmgUng')">
-                <img src="https://img.youtube.com/vi/42O-uxmgUng/maxresdefault.jpg" class="thumb-img">
-                <div class="play-overlay"><div class="play-btn">▶</div></div>
+            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/movie.mp4')">
+                <div class="video-placeholder">
+                    <div class="play-trigger"><i class="fas fa-play"></i></div>
+                </div>
+                <h3>PROJECT_BETA</h3>
+                <p style="color: var(--text-secondary); font-size: 0.8rem;">PYTHON / AUTOMATION</p>
             </div>
-            <div class="video-box" onclick="openVideo('HXgp96SzYrk')">
-                <img src="https://img.youtube.com/vi/HXgp96SzYrk/maxresdefault.jpg" class="thumb-img">
-                <div class="play-overlay"><div class="play-btn">▶</div></div>
-            </div>
-        </div>
 
-        <div id="skript" class="project-grid">
-            <div class="video-box" onclick="openVideo('c2LI4pcD5UQ')">
-                <img src="https://img.youtube.com/vi/c2LI4pcD5UQ/maxresdefault.jpg" class="thumb-img">
-                <div class="play-overlay"><div class="play-btn">▶</div></div>
+            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/mov_bbb.mp4')">
+                <div class="video-placeholder">
+                    <div class="play-trigger"><i class="fas fa-play"></i></div>
+                </div>
+                <h3>PROJECT_GAMMA</h3>
+                <p style="color: var(--text-secondary); font-size: 0.8rem;">HTML / CSS MASTER</p>
             </div>
-            <div class="video-box" onclick="openVideo('suP98zsJ20k')">
-                <img src="https://img.youtube.com/vi/suP98zsJ20k/maxresdefault.jpg" class="thumb-img">
-                <div class="play-overlay"><div class="play-btn">▶</div></div>
-            </div>
-        </div>
 
-        <div id="python" class="project-grid">
-            <div class="coming-soon">
-                <h3 style="color: var(--secondary)">System.Python.init()</h3>
-                <p>Advanced Discord Bots and Data Processing coming soon.</p>
-            </div>
-        </div>
-
-        <div id="web" class="project-grid">
-            <div class="coming-soon">
-                <h3 style="color: var(--primary)">Frontend_Module.load()</h3>
-                <p>Next.js and Tailwind CSS interfaces in development.</p>
+            <div class="project-card" onclick="openVideo('https://www.w3schools.com/html/movie.mp4')">
+                <div class="video-placeholder">
+                    <div class="play-trigger"><i class="fas fa-play"></i></div>
+                </div>
+                <h3>PROJECT_DELTA</h3>
+                <p style="color: var(--text-secondary); font-size: 0.8rem;">FULL STACK / API</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="modal" id="videoModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeVideo()">&times; CLOSE</button>
-            <iframe id="videoPlayer" width="100%" height="100%" src="" frameborder="0" allowfullscreen></iframe>
+    <div class="video-menu" id="videoMenu">
+        <div class="video-wrapper">
+            <div class="close-video" onclick="closeVideo()">[ CLOSE_SYSTEM ]</div>
+            <video id="mainVideo" controls>
+                <source src="" type="video/mp4">
+            </video>
         </div>
     </div>
 
     <script>
-        // Custom Cursor Logic
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+        // 1. TERMINAL PRELOADER LOGIC
+        const loader = document.getElementById('terminal-loader');
+        const commands = [
+            "STARTING ELINA_BOOT_SEQUENCE...",
+            "LOADING MODULES: [JS, HTML, PYTHON]",
+            "CONNECTING TO NEON_SERVER...",
+            "ESTABLISHING SECURE PROTOCOLS...",
+            "DECRYPTING INTERFACE...",
+            "SYSTEM READY."
+        ];
+
+        commands.forEach((cmd, i) => {
+            const line = document.createElement('div');
+            line.className = 'code-line';
+            line.innerHTML = `> ${cmd}`;
+            line.style.animation = `fadeInLine 0.3s forwards ${i * 0.4}s`;
+            loader.appendChild(line);
         });
 
-        // Tab Switching Logic
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.project-grid').forEach(g => g.classList.remove('active'));
-            document.querySelectorAll('.tab-trigger').forEach(t => t.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 1000);
+        }, 3500);
+
+        // 2. CANVAS PARTICLES
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(188, 19, 254, 0.3)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
 
-        // Video Modal Logic
-        const modal = document.getElementById('videoModal');
-        const player = document.getElementById('videoPlayer');
+        function init() {
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
+        }
 
-        function openVideo(id) {
-            player.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
-            modal.classList.add('open');
-            document.body.style.overflow = 'hidden';
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+
+        // 3. CURSOR LOGIC
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
+            outline.style.left = e.clientX - 20 + 'px';
+            outline.style.top = e.clientY - 20 + 'px';
+        });
+
+        // 4. VIDEO MENU LOGIC
+        const videoMenu = document.getElementById('videoMenu');
+        const mainVideo = document.getElementById('mainVideo');
+
+        function openVideo(src) {
+            mainVideo.src = src;
+            videoMenu.style.display = 'flex';
+            mainVideo.play();
         }
 
         function closeVideo() {
-            modal.classList.remove('open');
-            player.src = '';
-            document.body.style.overflow = 'auto';
+            videoMenu.style.display = 'none';
+            mainVideo.pause();
+            mainVideo.src = "";
         }
-
-        // Close modal on escape key
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape') closeVideo();
-        });
-
-        // Loader removal
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').remove(), 1000);
-            }, 2000);
-        });
     </script>
 </body>
 </html>
