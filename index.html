@@ -14,9 +14,9 @@
       --card: rgba(17, 10, 41, 0.6);
       --text: #ffffff;
       --muted: #a1a1aa;
-      --accent: #8b5cf6; /* Violet-500 */
+      --accent: #8b5cf6; 
       --accent-glow: rgba(139, 92, 246, 0.5);
-      --secondary: #d946ef; /* Fuchsia-500 */
+      --secondary: #d946ef; 
       --nav-bg: rgba(3, 0, 20, 0.8);
     }
 
@@ -36,13 +36,13 @@
       overflow-x: hidden;
     }
 
-    /* CUSTOM SCROLLBAR */
+   
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-    /* NAVBAR */
+  
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -77,7 +77,7 @@
 
     nav .links a:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
 
-    /* HERO SECTION */
+  
     .hero {
       min-height: 100vh;
       display: flex;
@@ -130,7 +130,6 @@
         box-shadow: 0 0 20px var(--accent-glow);
     }
 
-    /* PROJECTS SECTION */
     .container { max-width: 1200px; margin: 0 auto; padding: 100px 24px; }
 
     .section-title {
@@ -140,7 +139,7 @@
       text-align: center;
     }
 
-    /* TABS */
+  
     .tabs {
       display: flex;
       justify-content: center;
@@ -174,7 +173,6 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* GRID */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -184,7 +182,7 @@
     .video-card {
       background: var(--card);
       border-radius: 24px;
-      /* Crucial: Keeps video/images from leaking out of rounded corners */
+
       overflow: hidden; 
       border: 1px solid rgba(255, 255, 255, 0.05);
       transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
@@ -200,7 +198,7 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px var(--accent-glow);
     }
 
-    /* Combined selector for both static images and potential iframes */
+
     .video-card img, 
     .video-card iframe {
       width: 100%;
@@ -209,7 +207,7 @@
       opacity: 0.8;
       transition: 0.4s;
       border: none;
-      display: block; /* Removes tiny white-space gap at bottom */
+      display: block; 
     }
 
     .video-card:hover img,
@@ -219,14 +217,14 @@
 
     .video-card .info {
       padding: 20px;
-      /* Modern text shadow for better readability over video */
+
       background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
       font-weight: 500;
       color: var(--text);
       z-index: 2;
     }
 
-    /* BUTTONS / CONTACT */
+
     .contact {
       text-align: center;
       padding: 100px 20px;
@@ -256,7 +254,7 @@
         border: 1px solid rgba(255,255,255,0.2);
     }
 
-    /* MODAL */
+
     .modal {
       position: fixed;
       inset: 0;
@@ -277,7 +275,7 @@
       box-shadow: 0 0 50px var(--accent-glow);
     }
 
-    /* UTILS */
+
     .fade { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
     .fade.show { opacity: 1; transform: translateY(0); }
 
@@ -391,7 +389,7 @@
   </div>
 
   <script>
-    // Tab Logic
+   
     function openTab(evt, id) {
       const contents = document.querySelectorAll('.tab-content');
       const tabs = document.querySelectorAll('.tab');
@@ -403,11 +401,11 @@
       evt.currentTarget.classList.add('active');
     }
 
-    // Video Logic
+
     function openVideo(id) {
       const frame = document.getElementById('videoFrame');
       frame.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
-      // Ensure the iframe fills the modal frame
+
       frame.style.width = '100%';
       frame.style.height = '100%';
       frame.style.border = '0';
@@ -420,7 +418,7 @@
       document.getElementById('videoModal').classList.remove('active');
     }
 
-    // Scroll Observer
+
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('show');
